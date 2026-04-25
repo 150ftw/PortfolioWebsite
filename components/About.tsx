@@ -169,7 +169,7 @@ export default function About({ booted }: { booted: boolean }) {
           </div>
 
           {/* HUD Metadata */}
-          <div className="absolute top-12 left-[8vw] flex gap-12 hidden md:flex">
+          <div className="absolute top-24 left-[8vw] flex flex-col md:flex-row gap-6 md:gap-12">
             <div className="flex flex-col gap-1">
               <span className="ui-label text-[9px] text-ink/40 uppercase">Viewport_Coord</span>
               <DynamicCoord />

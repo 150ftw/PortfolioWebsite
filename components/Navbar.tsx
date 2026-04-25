@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Github, Linkedin, Instagram, Menu, X } from "lucide-react";
+import { Github, Linkedin, Instagram, Menu, X, Terminal } from "lucide-react";
 import { DiscordIcon } from "./icons/DiscordIcon";
 import { navSections, owner } from "@/lib/data";
 
@@ -30,7 +30,7 @@ import { useUI } from "./UIContext";
 import { Activity } from "lucide-react";
 
 export default function Navbar() {
-  const { isHudVisible, toggleHud } = useUI();
+  const { isHudVisible, toggleHud, toggleCommandCenter } = useUI();
   const [active, setActive] = useState<string>("hero");
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -179,6 +179,12 @@ export default function Navbar() {
         >
           <Activity size={16} />
         </button>
+        <button
+          onClick={toggleCommandCenter}
+          className="p-2 border text-paper/40 border-paper/10 hover:border-acid hover:text-acid"
+        >
+          <Terminal size={16} />
+        </button>
       </div>
         <button
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -234,6 +240,20 @@ export default function Navbar() {
                 <div className="ui-label text-ink/80 space-y-1">
                   <div>{owner.location}</div>
                   <div className="mono text-[10px] normal-case tracking-normal">{owner.email}</div>
+                </div>
+
+                <div className="flex gap-4 pt-4">
+                  {socials.map(({ icon: Icon, href, label }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-ink/60 transition-colors hover:text-ink border border-ink/10 p-2"
+                    >
+                      <Icon size={16} strokeWidth={2} />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>

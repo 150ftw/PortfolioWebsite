@@ -11,10 +11,8 @@ export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
     
-    let weatherData = "Unavailable (Tell the user you don't have real-time access right now if they ask).";
+    let weatherData = "Unavailable";
     try {
-      // Fetching weather from Open-Meteo for Gurugram (Lat: 28.4595, Lon: 77.0266)
-      // This source is generally more accurate for real-time temperature.
       const weatherRes = await fetch("https://api.open-meteo.com/v1/forecast?latitude=28.4595&longitude=77.0266&current_weather=true", { 
         signal: AbortSignal.timeout(3000) 
       });

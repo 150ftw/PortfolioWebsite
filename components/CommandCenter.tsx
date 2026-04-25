@@ -10,8 +10,10 @@ type Message = {
   content: string;
 };
 
+import { useUI } from "./UIContext";
+
 export default function CommandCenter() {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isCommandCenterOpen: isOpen, setCommandCenterOpen: setIsOpen } = useUI();
   const [mode, setMode] = useState<"command" | "agent">("command");
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
@@ -25,7 +27,7 @@ export default function CommandCenter() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        setIsOpen((prev) => !prev);
+        setIsOpen(!isOpen);
       }
       if (e.key === "Escape") {
         setIsOpen(false);
@@ -33,7 +35,7 @@ export default function CommandCenter() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isOpen, setIsOpen]);
 
   useEffect(() => {
     if (isOpen) {

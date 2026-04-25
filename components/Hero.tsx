@@ -193,7 +193,7 @@ export default function Hero({ booted }: { booted: boolean }) {
 
       {/* Bottom-left tiny terminal — above CTA so they don't overlap on mobile */}
       <motion.div
-        className="absolute left-[4vw] bottom-6 z-10 mono text-[11px] text-paper/60 hidden md:block"
+        className="absolute left-[6vw] bottom-24 md:bottom-6 z-10 mono text-[10px] md:text-[11px] text-paper/60 flex flex-col"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.3, duration: 0.6 }}
@@ -217,7 +217,7 @@ export default function Hero({ booted }: { booted: boolean }) {
       </motion.div>
 
       {/* NEW: HUD Decorative Elements */}
-      <div className="absolute top-10 right-10 z-20 hidden md:flex flex-col items-end gap-1 opacity-40">
+      <div className="absolute top-6 right-6 md:top-10 md:right-10 z-20 flex flex-col items-end gap-1 opacity-40">
         <div className="flex items-center gap-2">
           <div className="h-1.5 w-1.5 rounded-full bg-acid animate-pulse" />
           <span className="ui-label text-[9px] text-paper tracking-[0.4em]">FRAME_SYNC: OK</span>
@@ -225,13 +225,13 @@ export default function Hero({ booted }: { booted: boolean }) {
         <span className="mono text-[8px] text-paper/60">60FPS // SHVM_OS_v1.0.4</span>
       </div>
 
-      <div className="absolute top-10 left-10 z-20 hidden md:flex flex-col gap-1 opacity-40">
+      <div className="absolute top-6 left-6 md:top-10 md:left-10 z-20 flex flex-col gap-1 opacity-40">
         <span className="ui-label text-[9px] text-paper tracking-[0.4em]">LOC_COORD</span>
         <span className="mono text-[8px] text-paper/60">{owner.coords}</span>
       </div>
 
       {/* Decorative vertical metadata */}
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-8 opacity-20 select-none">
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-8 opacity-20 select-none">
         <span className="mono text-[9px] uppercase tracking-[0.6em] [writing-mode:vertical-lr]">AGENTIC_BUILD_SYSTEM</span>
         <div className="h-24 w-px bg-paper/30" />
         <span className="mono text-[9px] uppercase tracking-[0.6em] [writing-mode:vertical-lr]">NODE_STABLE</span>
