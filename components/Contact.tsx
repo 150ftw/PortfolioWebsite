@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Github, Linkedin, Instagram } from "lucide-react";
+import { Github, Linkedin, Instagram, MessageCircle } from "lucide-react";
 import { DiscordIcon } from "./icons/DiscordIcon";
 import { useRef, useState } from "react";
 import { owner } from "@/lib/data";
@@ -11,6 +11,7 @@ const socials = [
   { icon: Linkedin, href: owner.linkedin, label: "LINKEDIN" },
   { icon: DiscordIcon, href: owner.discord, label: "DISCORD" },
   { icon: Instagram, href: owner.instagram, label: "INSTAGRAM" },
+  { icon: MessageCircle, href: owner.whatsapp, label: "WHATSAPP" },
 ];
 
 /**

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Github, Linkedin, Instagram, Menu, X, Terminal } from "lucide-react";
+import { Github, Linkedin, Instagram, Menu, X, Terminal, MessageCircle } from "lucide-react";
 import { DiscordIcon } from "./icons/DiscordIcon";
 import { navSections, owner } from "@/lib/data";
 
@@ -11,6 +11,7 @@ const socials = [
   { icon: Linkedin, href: owner.linkedin, label: "LINKEDIN" },
   { icon: DiscordIcon, href: owner.discord, label: "DISCORD" },
   { icon: Instagram, href: owner.instagram, label: "INSTAGRAM" },
+  { icon: MessageCircle, href: owner.whatsapp, label: "WHATSAPP" },
 ];
 
 import Image from "next/image";

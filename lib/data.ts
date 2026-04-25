@@ -24,6 +24,7 @@ export const owner = {
   resume: "https://drive.google.com/file/d/1A5YhiQ7tkVYGrJHLcmledmJmo6Tja8Z8/view?usp=sharing",
   discord: "https://discord.com/users/453869754944585738",
   instagram: "https://www.instagram.com/shiv_mmm/",
+  whatsapp: "https://api.whatsapp.com/send/?phone=9667510634&text&type=phone_number&app_absent=0",
   bio: "I build AI-powered products at the intersection of finance and technology. Co-founder of EcoInsight.AI — an AI-driven stock analytics platform for retail investors. I work across the full stack with deep focus on Web3/Solidity, RAG pipelines, Docker, and AWS.",
   aboutBio:
     "Co-founder, builder, and product-minded engineer based out of Gurugram. My work sits at the seam where finance meets machine intelligence — RAG pipelines that reason over market data, retrieval systems that turn raw filings into decisions, and interfaces that make it all feel inevitable.",
