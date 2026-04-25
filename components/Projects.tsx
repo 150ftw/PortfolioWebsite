@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import Marquee from "@/components/Marquee";
 import { projects, type Project } from "@/lib/data";
@@ -267,9 +268,11 @@ function InfoCol({
       {project.image && (
         <div className="relative z-10 mt-6 mb-2 group-hover:shadow-[0_0_50px_-12px_rgba(0,255,148,0.3)] transition-all duration-700 md:mt-8 md:mb-6">
           <div className="relative overflow-hidden rounded-md border border-[var(--panel-border)] shadow-2xl">
-            <img 
+            <Image 
               src={project.image} 
               alt={`${project.name} preview`} 
+              width={1200}
+              height={800}
               className="w-full h-auto object-cover opacity-80 mix-blend-lighten transition-all duration-700 group-hover:scale-[1.02] group-hover:opacity-100 group-hover:mix-blend-normal" 
             />
             {/* Image scanning line */}
