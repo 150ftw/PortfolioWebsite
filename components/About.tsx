@@ -31,8 +31,6 @@ export default function About({ booted }: { booted: boolean }) {
   }, []);
 
   useEffect(() => {
-    if (!isDesktop) return;
-
     let ctx: { revert: () => void } | null = null;
     let cancelled = false;
 
@@ -51,19 +49,23 @@ export default function About({ booted }: { booted: boolean }) {
 
         const panels = 3;
         
-        const trackTween = gsap.to(track, {
-          x: () => -(window.innerWidth * (panels - 1)),
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            pin: true,
-            scrub: true,
-            start: "top top",
-            end: () => `+=${window.innerWidth * (panels - 1)}`,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-          },
-        });
+        let trackTween: gsap.core.Tween | undefined;
+
+        if (isDesktop) {
+          trackTween = gsap.to(track, {
+            x: () => -(window.innerWidth * (panels - 1)),
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              pin: true,
+              scrub: true,
+              start: "top top",
+              end: () => `+=${window.innerWidth * (panels - 1)}`,
+              invalidateOnRefresh: true,
+              anticipatePin: 1,
+            },
+          });
+        }
 
         // Bio character reveal
         if (bioRef.current) {
@@ -74,16 +76,15 @@ export default function About({ booted }: { booted: boolean }) {
             stagger: 0.1,
             scrollTrigger: {
               trigger: bioRef.current,
-              containerAnimation: trackTween,
-              start: "left 65%",
-              end: "left 15%",
+              containerAnimation: isDesktop ? trackTween : undefined,
+              start: isDesktop ? "left 65%" : "top 80%",
+              end: isDesktop ? "left 15%" : "bottom 20%",
               scrub: true,
             },
           });
         }
       }, sectionRef);
 
-      // Force a refresh once site is ready or window loads
       ScrollTrigger.refresh();
     })();
 

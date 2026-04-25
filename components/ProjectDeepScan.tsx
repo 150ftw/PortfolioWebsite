@@ -184,20 +184,20 @@ export default function ProjectDeepScan({ project, onClose }: ProjectDeepScanPro
           </div>
 
           {/* Footer Metadata */}
-          <div className="px-6 py-3 border-t border-acid/10 bg-ink/50 flex justify-between items-center">
-            <div className="flex gap-6">
-               <div className="flex flex-col">
+          <div className="px-6 py-3 border-t border-acid/10 bg-ink/50 flex justify-between items-center overflow-hidden">
+            <div className="flex gap-4 md:gap-6">
+               <div className="hidden sm:flex flex-col">
                   <span className="ui-label text-[8px] text-paper/20 uppercase">Core_Version</span>
                   <span className="mono text-[10px] text-paper/40">3.4.1-STABLE</span>
                </div>
                <div className="flex flex-col">
-                  <span className="ui-label text-[8px] text-paper/20 uppercase">Buffer_Status</span>
-                  <span className="mono text-[10px] text-acid/60">SYNCHRONIZED</span>
+                  <span className="ui-label text-[8px] text-paper/20 uppercase hidden sm:inline">Buffer_Status</span>
+                  <span className="mono text-[10px] text-acid/60">SYNC</span>
                </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <div className="h-1.5 w-1.5 rounded-full bg-acid animate-pulse" />
-              <span className="ui-label text-[9px] text-acid uppercase tracking-tighter">Live_Telemetry</span>
+              <span className="ui-label text-[9px] text-acid uppercase">Live_Telemetry</span>
             </div>
           </div>
         </motion.div>
