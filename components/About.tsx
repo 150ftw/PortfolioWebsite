@@ -95,12 +95,12 @@ export default function About() {
           }
         >
         <div
-          className={`about-panel relative flex flex-col justify-center bg-paper text-ink overflow-hidden shrink-0 ${isDesktop ? "h-[100svh] w-screen px-[6vw]" : "min-h-[90vh] px-6 py-24"
+          className={`about-panel relative flex flex-col justify-center bg-paper text-ink overflow-hidden shrink-0 ${isDesktop ? "h-[100svh] w-screen px-[8vw]" : "min-h-[90vh] px-6 py-24"
             }`}
         >
           <BlueprintBackground />
           
-          <div className="relative z-10 brutal-heading text-ink" style={{ fontSize: "clamp(3rem, 15vw, 18rem)", lineHeight: 0.85 }}>
+          <div className="relative z-10 brutal-heading text-ink" style={{ fontSize: "clamp(3rem, 12vw, 14rem)", lineHeight: 0.85 }}>
             <motion.div 
               data-reveal 
               initial={{ opacity: 0, x: -40 }} 
@@ -144,7 +144,7 @@ export default function About() {
           </div>
 
           {/* HUD Metadata */}
-          <div className="absolute top-12 left-[6vw] flex gap-12 hidden md:flex">
+          <div className="absolute top-12 left-[8vw] flex gap-12 hidden md:flex">
             <div className="flex flex-col gap-1">
               <span className="ui-label text-[9px] text-ink/40 uppercase">Viewport_Coord</span>
               <DynamicCoord />
@@ -155,12 +155,12 @@ export default function About() {
             </div>
           </div>
 
-          <div className="ui-label absolute bottom-8 left-[6vw] text-ink/50" data-reveal>
+          <div className="ui-label absolute bottom-8 left-[8vw] text-ink/50" data-reveal>
             / 01 · PHILOSOPHY
           </div>
 
           {/* Right side status block */}
-          <div className="absolute right-[6vw] bottom-8 hidden md:block">
+          <div className="absolute right-[8vw] bottom-8 hidden md:block">
             <div className="flex items-center gap-3">
               <div className="h-2 w-2 bg-acid animate-pulse" />
               <span className="ui-label text-[10px] text-ink/40 tracking-widest uppercase italic">Logic_Stream_Active</span>
@@ -170,29 +170,29 @@ export default function About() {
 
         <div
           className={`about-panel relative flex flex-col bg-ink text-paper shrink-0 ${isDesktop
-            ? "h-[100svh] w-screen flex-row items-center px-[6vw] py-20"
+            ? "h-[100svh] w-screen flex-row items-center justify-between px-[8vw] py-20"
             : "min-h-[90vh] px-6 py-24"
             }`}
         >
-          {/* Diagonal rule — desktop only */}
+          {/* Diagonal rule — subtle decorative element */}
           {isDesktop && (
             <div
-              className="absolute left-0 top-1/2 h-px w-[140%] origin-left rotate-[-22deg] bg-paper/20"
+              className="absolute left-0 top-[40%] h-px w-[140%] origin-left rotate-[-15deg] bg-paper/5"
               aria-hidden
             />
           )}
 
           {/* Bio */}
-          <div className={isDesktop ? "w-1/2 pr-12" : "mb-16"}>
-            <p className="ui-label mb-6 text-paper/50" data-reveal>
+          <div className={isDesktop ? "relative z-10 w-[42%] pr-12" : "mb-16"}>
+            <p className="ui-label mb-6 text-paper/40" data-reveal>
               / 02 · BIO
             </p>
             <p
-              className="editorial italic leading-[1.55] text-paper"
-              style={{ fontSize: isDesktop ? "1.6rem" : "1.3rem" }}
+              className="editorial italic leading-[1.65] text-paper/90"
+              style={{ fontSize: isDesktop ? "1.5rem" : "1.25rem" }}
               data-reveal
             >
-              <span className="text-acid">Co-founder</span>, builder, and
+              <span className="text-acid not-italic font-bold">Co-founder</span>, builder, and
               product-minded engineer based out of {owner.location}. My work
               sits at the seam where finance meets machine intelligence — RAG
               pipelines that reason over market data, retrieval systems that
@@ -202,16 +202,16 @@ export default function About() {
           </div>
 
           {/* Stats */}
-          <div className={isDesktop ? "grid w-1/2 grid-cols-2 gap-8 relative z-10" : "grid grid-cols-2 gap-6 relative z-10"}>
+          <div className={isDesktop ? "grid w-[50%] grid-cols-2 gap-x-12 gap-y-16 relative z-10 pl-12 border-l border-paper/10" : "grid grid-cols-2 gap-6 relative z-10 pt-16 border-t border-paper/10"}>
             {stats.map((stat) => (
-              <div key={stat.label} className="border-t border-paper/20 pt-4 group hover:border-acid/50 transition-colors duration-500" data-reveal>
+              <div key={stat.label} className="group transition-colors duration-500" data-reveal>
                 <div className="flex justify-between items-start mb-2">
                    <div className="ui-label text-[8px] text-paper/30 tracking-[0.3em]">METRIC_NODE</div>
                    <div className="h-1 w-1 rounded-full bg-paper/20 group-hover:bg-acid transition-colors" />
                 </div>
                 <div
                   className="brutal-heading leading-none text-paper group-hover:text-acid transition-colors"
-                  style={{ fontSize: isDesktop ? "10vw" : "18vw" }}
+                  style={{ fontSize: isDesktop ? "7vw" : "14vw" }}
                 >
                   {stat.value}
                 </div>
@@ -221,7 +221,7 @@ export default function About() {
           </div>
 
           {/* Corner metadata for Panel 2 */}
-          <div className="absolute top-12 right-[6vw] hidden md:block opacity-30 select-none">
+          <div className="absolute top-12 right-[8vw] hidden md:block opacity-30 select-none">
             <span className="mono text-[9px] text-paper/40 tracking-[0.5em] uppercase">Phase_02 // BIOSCAN_READY</span>
           </div>
         </div>
