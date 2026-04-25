@@ -1,14 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Terminal } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import Marquee from "@/components/Marquee";
 import { projects, type Project } from "@/lib/data";
 
+import { useState } from "react";
+import ProjectDeepScan from "@/components/ProjectDeepScan";
+
 export default function Projects() {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [activeScanProject, setActiveScanProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -64,9 +68,19 @@ export default function Projects() {
 
       <div ref={wrapperRef} className="peel-wrapper">
         {projects.map((project, idx) => (
-          <ProjectPanel key={project.number} project={project} index={idx} />
+          <ProjectPanel 
+            key={project.number} 
+            project={project} 
+            index={idx} 
+            onScan={() => setActiveScanProject(project)} 
+          />
         ))}
       </div>
+
+      <ProjectDeepScan 
+        project={activeScanProject} 
+        onClose={() => setActiveScanProject(null)} 
+      />
     </section>
   );
 }
@@ -102,7 +116,7 @@ const PANEL_BORDER: Record<Project["bg"], string> = {
 /* ──────────────────────────────────────────────────────── */
 /* ProjectPanel                                            */
 /* ──────────────────────────────────────────────────────── */
-function ProjectPanel({ project, index }: { project: Project; index: number }) {
+function ProjectPanel({ project, index, onScan }: { project: Project; index: number; onScan: () => void }) {
   const bg     = PANEL_BG[project.bg];
   const text   = PANEL_TEXT[project.bg];
   const muted  = PANEL_MUTED[project.bg];
@@ -130,7 +144,7 @@ function ProjectPanel({ project, index }: { project: Project; index: number }) {
           }`}
         >
           {/* NAME COLUMN */}
-          <NameCol project={project} muted={muted} index={index} />
+          <NameCol project={project} muted={muted} index={index} onScan={onScan} />
 
           {/* INFO COLUMN */}
           <InfoCol project={project} text={text} muted={muted} index={index} />
@@ -145,9 +159,9 @@ function ProjectPanel({ project, index }: { project: Project; index: number }) {
 
 /* ── Name column ── */
 function NameCol({
-  project, muted, index,
+  project, muted, index, onScan
 }: {
-  project: Project; muted: string; index: number;
+  project: Project; muted: string; index: number; onScan: () => void;
 }) {
   return (
     <div className="relative flex flex-1 flex-col justify-center overflow-hidden px-6 pb-12 pt-14 md:px-[6vw] md:py-0">
@@ -185,7 +199,7 @@ function NameCol({
         {project.tagline}
       </p>
 
-      <div className="relative z-30 mt-8 flex flex-wrap items-center gap-x-8 gap-y-6">
+      <div className="relative z-30 mt-8 flex flex-col md:flex-row md:items-center gap-x-8 gap-y-6">
         <div className="flex flex-wrap gap-6">
           {project.github && (
             <a
@@ -223,6 +237,21 @@ function NameCol({
               />
             </a>
           )}
+          
+          <button
+            onClick={onScan}
+            data-cursor
+            data-cursor-label="SCAN"
+            className="group/link inline-flex items-center gap-2 text-sm text-acid"
+          >
+            <span className="underline underline-offset-8 decoration-acid/30 transition-colors group-hover/link:decoration-acid">
+              DEEP SCAN
+            </span>
+            <Terminal
+              size={14}
+              className="transition-transform group-hover/link:scale-110"
+            />
+          </button>
         </div>
 
         {/* Tech Stack Chips */}

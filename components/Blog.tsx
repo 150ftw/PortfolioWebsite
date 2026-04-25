@@ -11,8 +11,11 @@ import { blogPosts, type BlogPost } from "@/lib/data";
  *  - Posts 02 & 03 stack on the right 40%.
  *  - A thin vertical rule divides left and right columns.
  */
+import JournalReader from "@/components/JournalReader";
+
 export default function Blog() {
   const [displayPosts, setDisplayPosts] = useState<BlogPost[]>([]);
+  const [activePost, setActivePost] = useState<BlogPost | null>(null);
 
   useEffect(() => {
     // Shuffle and pick 3
@@ -60,8 +63,9 @@ export default function Blog() {
         >
           <div
             data-cursor
-            data-cursor-label="COMING SOON"
-            className="group block cursor-default"
+            data-cursor-label="READ"
+            onClick={() => setActivePost(lede)}
+            className="group block cursor-pointer"
           >
             <div
               className="brutal-heading text-acid"
@@ -105,8 +109,9 @@ export default function Blog() {
             >
               <div
                 data-cursor
-                data-cursor-label="COMING SOON"
-                className="group block cursor-default"
+                data-cursor-label="READ"
+                onClick={() => setActivePost(post)}
+                className="group block cursor-pointer"
               >
                 <div
                   className={`brutal-heading ${
@@ -142,6 +147,11 @@ export default function Blog() {
           ))}
         </div>
       </div>
+
+      <JournalReader 
+        post={activePost} 
+        onClose={() => setActivePost(null)} 
+      />
     </section>
   );
 }

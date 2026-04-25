@@ -52,6 +52,11 @@ export type Project = {
   github?: string;
   live?: string;
   year?: string;
+  deepScan?: {
+    architecture: string[];
+    performance: { label: string; value: string }[];
+    logs: string[];
+  };
 };
 
 export const projects: Project[] = [
@@ -69,6 +74,21 @@ export const projects: Project[] = [
     image: "/images/projects/ecoinsight.png",
     github: "https://github.com/150ftw/EcoInsight",
     live: "https://www.ecoinsight.online",
+    deepScan: {
+      architecture: ["Vector Database (Pinecone)", "RAG Pipeline", "Next.js Edge", "AWS Lambda"],
+      performance: [
+        { label: "Retrieval Latency", value: "< 200ms" },
+        { label: "Inference Speed", value: "85 t/s" },
+        { label: "Accuracy", value: "94.2%" },
+      ],
+      logs: [
+        "INITIALIZING_RAG_PIPELINE...",
+        "CONNECTING_VECTOR_STORE_PRIMARY...",
+        "CHUNKING_STRATEGY: RECURSIVE_CHARACTER",
+        "EMBEDDING_MODEL: TEXT-EMBEDDING-3-SMALL",
+        "SYSTEM_READY_FOR_INFERENCE",
+      ],
+    },
   },
   {
     number: "02",
@@ -84,6 +104,20 @@ export const projects: Project[] = [
     image: "/images/projects/waitlist.png",
     github: "https://github.com/150ftw/EcoInsightWaitList",
     live: "https://www.joinecoinsight.dev",
+    deepScan: {
+      architecture: ["Next.js App Router", "Firebase Auth", "Firestore DB", "Tailwind CSS"],
+      performance: [
+        { label: "Lighthouse Score", value: "100" },
+        { label: "Conversion Rate", value: "12.5%" },
+        { label: "Load Time", value: "0.8s" },
+      ],
+      logs: [
+        "HYDRATING_WAITLIST_COMPONENT...",
+        "FETCHING_EARLY_ADOPTER_COUNT...",
+        "FIREBASE_CONNECTION_ESTABLISHED",
+        "ANALYTICS_EVENT: PAGE_VIEW_WAITLIST",
+      ],
+    },
   },
   {
     number: "03",
@@ -100,6 +134,20 @@ export const projects: Project[] = [
     image: "/images/projects/calmsphere.png",
     github: "https://github.com/150ftw/CalmSphere",
     live: "https://frontend-psi-nine-32.vercel.app",
+    deepScan: {
+      architecture: ["FastAPI Backend", "Fine-tuned GPT-4o", "React Frontend", "Vector Memory"],
+      performance: [
+        { label: "Sentiment Accuracy", value: "91%" },
+        { label: "Response Delay", value: "1.2s" },
+        { label: "Safety Score", value: "99.9%" },
+      ],
+      logs: [
+        "BOOTING_THERAPEUTIC_AGENT...",
+        "LOADING_CONVERSATIONAL_CONTEXT...",
+        "SAFETY_LAYER_ACTIVE",
+        "INFERENCE_ENGINE_SYNCED",
+      ],
+    },
   },
   {
     number: "04",
@@ -115,6 +163,20 @@ export const projects: Project[] = [
     image: "/images/projects/solarsystem.png",
     github: "https://github.com/150ftw/Solar-System-Explorer",
     live: "https://3d-solar-system-three-js.vercel.app",
+    deepScan: {
+      architecture: ["Three.js Scene Graph", "Custom Shaders", "Physics Engine", "WebGL 2.0"],
+      performance: [
+        { label: "Frame Rate", value: "60 FPS" },
+        { label: "Draw Calls", value: "124" },
+        { label: "GPU Load", value: "15%" },
+      ],
+      logs: [
+        "INITIALIZING_WEBGL_CONTEXT...",
+        "COMPILING_PLANETARY_SHADERS...",
+        "CALCULATING_KEPLERIAN_ORBITS...",
+        "SCENE_GRAPH_STABLE",
+      ],
+    },
   },
   {
     number: "05",
@@ -130,6 +192,20 @@ export const projects: Project[] = [
     image: "/images/projects/academiq.png",
     github: "https://github.com/150ftw/Automated-Result-Management-System",
     live: "https://academiqq.vercel.app",
+    deepScan: {
+      architecture: ["Python Flask API", "Firebase Storage", "Vercel Hosting", "Auth0"],
+      performance: [
+        { label: "Report Gen Time", value: "2s" },
+        { label: "Database Latency", value: "45ms" },
+        { label: "Storage Capacity", value: "10TB+" },
+      ],
+      logs: [
+        "SYNCING_ACADEMIC_RECORDS...",
+        "GENERATING_PDF_REPORTS...",
+        "STORAGE_UPLINK_STABLE",
+        "ENCRYPTION_LAYER_ACTIVE",
+      ],
+    },
   },
 ];
 
@@ -201,6 +277,7 @@ export type BlogPost = {
   number: string;
   title: string;
   excerpt: string;
+  content: string;
   category: string;
   readTime: string;
   accent: "acid" | "danger";
@@ -212,6 +289,21 @@ export const blogPosts: BlogPost[] = [
     title: "Building a Production RAG Pipeline from Scratch",
     excerpt:
       "A field guide to retrieval-augmented generation — from chunking strategies to reranking, grounding, and the unsexy plumbing that turns a demo into a product.",
+    content: `
+Retrieval-Augmented Generation (RAG) has moved from a research novelty to a production necessity. But the gap between a "Hello World" notebook and a production-grade system is vast.
+
+### The Problem of Context
+Most RAG demos fail because they treat retrieval as a simple search. In production, you need to consider chunking strategies that preserve semantic meaning. Are you using fixed-size windows? Overlapping sentences? Or recursively splitting based on document structure?
+
+### The Chunking Strategy
+We found that recursive character splitting works best for technical documentation. It respects paragraph boundaries, ensuring that code blocks and their explanations stay together.
+
+### Reranking: The Secret Sauce
+Vector search is great at broad retrieval, but it lacks the nuance for precision. Implementing a reranker (like Cohere or a local Cross-Encoder) can significantly improve the grounding of your LLM responses.
+
+### Conclusion
+Building a RAG pipeline is 20% AI and 80% plumbing. Focus on the data quality and the retrieval precision, and the LLM will take care of the rest.
+    `,
     category: "AI / ENG",
     readTime: "12 MIN READ",
     accent: "acid",
@@ -221,6 +313,18 @@ export const blogPosts: BlogPost[] = [
     title: "Why Retail Investors Need AI-Powered Analytics",
     excerpt:
       "The information asymmetry between institutions and retail is closing — not with data, but with the models that make sense of it.",
+    content: `
+The financial world has always been a battle of information. For decades, institutional investors had the upper hand, thanks to expensive Bloomberg terminals and teams of analysts.
+
+### The Democratization of Data
+Data is no longer the moat. Financial filings, news, and price action are now accessible to everyone. The new moat is the ability to process and reason over that data at scale.
+
+### Enter AI-Driven Reasoning
+Traditional analytics give you charts. AI-driven analytics give you conviction. By using LLMs to reason over thousands of pages of earnings transcripts, retail investors can finally spot the patterns that were previously hidden in the noise.
+
+### The Future of Investing
+We are moving toward a world where every retail investor has a "quant team" in their pocket. This doesn't mean AI makes the decisions—it means AI provides the synthesized intelligence for humans to make better ones.
+    `,
     category: "FINANCE",
     readTime: "8 MIN READ",
     accent: "danger",
@@ -230,6 +334,18 @@ export const blogPosts: BlogPost[] = [
     title: "Getting Started with Solidity: A Developer's Guide",
     excerpt:
       "A builder's path into EVM smart contracts — gas, storage, reentrancy, and the mental model you actually need.",
+    content: `
+Solidity is a deceptively simple language. It looks like JavaScript, but it behaves like a bomb disposal manual. Every line has a cost, and every mistake is permanent.
+
+### The Storage Paradox
+In traditional dev, memory is cheap. In Solidity, storage is the most expensive thing you can do. Understanding the difference between 'memory', 'storage', and 'calldata' is the first step to becoming a senior smart contract engineer.
+
+### Security First
+Reentrancy is the classic bug, but there are dozens of others: integer overflows (pre-0.8.0), front-running, and logic errors in access control. Auditing your own code starts with a "paranoid" mental model.
+
+### Gas Optimization
+Writing code is easy. Writing gas-efficient code is an art. Pack your variables, use events for off-chain data, and avoid loops like the plague.
+    `,
     category: "WEB3",
     readTime: "10 MIN READ",
     accent: "acid",
@@ -239,6 +355,9 @@ export const blogPosts: BlogPost[] = [
     title: "The Future of Agentic Workflows in Enterprise",
     excerpt:
       "Beyond simple chatbots — how autonomous agents are beginning to handle complex, multi-step business logic and decision-making pipelines.",
+    content: `
+Agentic workflows are the next evolution of AI. Instead of a single LLM call, we are building systems that can plan, execute, and reflect on their own work.
+    `,
     category: "AI / ENG",
     readTime: "15 MIN READ",
     accent: "danger",
@@ -248,6 +367,9 @@ export const blogPosts: BlogPost[] = [
     title: "Scaling Next.js Apps with Edge Functions",
     excerpt:
       "Why the edge is the future of the web. A deep dive into middleware, streaming SSR, and low-latency data fetching at the global scale.",
+    content: `
+Next.js Edge Functions allow you to run code closer to your users. This is critical for low-latency AI applications and dynamic content delivery.
+    `,
     category: "DEV",
     readTime: "9 MIN READ",
     accent: "acid",
@@ -257,6 +379,9 @@ export const blogPosts: BlogPost[] = [
     title: "DeFi 2.0: Lessons from the Liquidity Crunch",
     excerpt:
       "An analysis of protocol-owned liquidity, yield optimization strategies, and the systemic risks that defined the second wave of decentralized finance.",
+    content: `
+DeFi 2.0 attempted to solve the liquidity problem. While some protocols failed, the lessons learned are shaping the next generation of financial primitives.
+    `,
     category: "WEB3",
     readTime: "11 MIN READ",
     accent: "danger",

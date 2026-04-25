@@ -48,6 +48,11 @@ export const metadata: Metadata = {
   },
 };
 
+import CommandCenter from "@/components/CommandCenter";
+import SystemHUD from "@/components/SystemHUD";
+
+import { UIProvider } from "@/components/UIContext";
+
 export default function RootLayout({
   children,
 }: {
@@ -59,19 +64,23 @@ export default function RootLayout({
       className={`${bebas.variable} ${playfair.variable} ${jetbrains.variable} ${dmSans.variable}`}
     >
       <body className="bg-ink text-paper antialiased relative">
-        {/* Global noise texture */}
-        <div className="noise pointer-events-none fixed inset-0 z-[9999] opacity-[0.03]" />
-        
-        {/* Global scanline overlay */}
-        <div 
-          className="pointer-events-none fixed inset-0 z-[9998] opacity-[0.02]" 
-          style={{
-            backgroundImage: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))',
-            backgroundSize: '100% 2px, 3px 100%'
-          }}
-        />
+        <UIProvider>
+          {/* Global noise texture */}
+          <div className="noise pointer-events-none fixed inset-0 z-[9999] opacity-[0.03]" />
+          
+          {/* Global scanline overlay */}
+          <div 
+            className="pointer-events-none fixed inset-0 z-[9998] opacity-[0.02]" 
+            style={{
+              backgroundImage: 'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))',
+              backgroundSize: '100% 2px, 3px 100%'
+            }}
+          />
 
-        {children}
+          <CommandCenter />
+          <SystemHUD />
+          {children}
+        </UIProvider>
       </body>
     </html>
   );

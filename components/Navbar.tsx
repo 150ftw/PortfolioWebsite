@@ -26,9 +26,15 @@ const Logo = ({ className }: { className?: string }) => (
   </div>
 );
 
+import { useUI } from "./UIContext";
+import { Activity } from "lucide-react";
+
 export default function Navbar() {
+  const { isHudVisible, toggleHud } = useUI();
   const [active, setActive] = useState<string>("hero");
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // ... rest of the existing state/effects ...
 
   // Spy on sections
   useEffect(() => {
@@ -125,6 +131,21 @@ export default function Navbar() {
           </a>
         </div>
 
+        {/* HUD Toggle */}
+        <div className="flex flex-col items-center gap-4 mb-4">
+          <button
+            onClick={toggleHud}
+            data-cursor
+            data-cursor-label={isHudVisible ? "HIDE HUD" : "SHOW HUD"}
+            className={`p-2 transition-all border ${
+              isHudVisible ? "text-acid border-acid/30 bg-acid/10" : "text-paper/40 border-paper/10 hover:border-paper/30"
+            }`}
+          >
+            <Activity size={14} strokeWidth={2} className={isHudVisible ? "animate-pulse" : ""} />
+          </button>
+          <div className="h-px w-4 bg-paper/10" />
+        </div>
+
         {/* Socials */}
         <div className="flex flex-col items-center gap-4">
           {socials.map(({ icon: Icon, href, label }) => (
@@ -145,12 +166,20 @@ export default function Navbar() {
       </nav>
 
     <div className="fixed bottom-0 left-0 right-0 z-[80] flex items-center justify-between border-t border-paper/10 bg-ink/90 px-5 py-3 backdrop-blur-md md:hidden">
-      <button
-        onClick={() => scrollTo("hero")}
-        className="flex items-center"
-      >
-        <Logo className="h-12 w-12 text-paper" />
-      </button>
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => scrollTo("hero")}
+          className="flex items-center"
+        >
+          <Logo className="h-12 w-12 text-paper" />
+        </button>
+        <button
+          onClick={toggleHud}
+          className={`p-2 border ${isHudVisible ? "text-acid border-acid/30" : "text-paper/40 border-paper/10"}`}
+        >
+          <Activity size={16} />
+        </button>
+      </div>
         <button
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           onClick={() => setMobileOpen((v) => !v)}
