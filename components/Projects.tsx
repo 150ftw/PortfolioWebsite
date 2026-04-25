@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Terminal } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import Marquee from "@/components/Marquee";
 import { projects, type Project } from "@/lib/data";
@@ -252,6 +253,21 @@ function NameCol({
               className="transition-transform group-hover/link:scale-110"
             />
           </button>
+
+          <Link
+            href={`/projects/${project.slug}`}
+            data-cursor
+            data-cursor-label="READ"
+            className="group/link inline-flex items-center gap-2 text-sm"
+          >
+            <span className="underline underline-offset-8 decoration-current/30 transition-colors group-hover/link:decoration-acid group-hover/link:text-acid uppercase">
+              Case Study
+            </span>
+            <ArrowUpRight
+              size={14}
+              className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 group-hover/link:text-acid"
+            />
+          </Link>
         </div>
 
         {/* Tech Stack Chips */}
