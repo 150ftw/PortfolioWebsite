@@ -69,7 +69,7 @@ export default function Navbar() {
       {/* DESKTOP — right-edge vertical strip */}
       <nav
         aria-label="Primary navigation"
-        className="fixed right-0 top-0 z-[80] hidden h-screen w-12 flex-col items-center justify-between border-l border-paper/10 bg-ink/40 py-6 backdrop-blur-sm md:flex"
+        className="fixed right-0 top-0 z-[80] hidden h-screen w-16 flex-col items-center justify-between border-l border-paper/10 bg-ink/40 py-6 backdrop-blur-sm md:flex"
       >
         {/* Monogram rotated */}
         <button
@@ -78,7 +78,7 @@ export default function Navbar() {
           data-cursor-label="TOP"
           className="group transition-colors"
         >
-          <Logo className="h-16 w-16 text-paper transition-colors group-hover:brightness-125" />
+          <Logo className="h-24 w-24 text-paper transition-colors group-hover:brightness-125" />
         </button>
 
         {/* Section indicators */}
@@ -171,7 +171,7 @@ export default function Navbar() {
           onClick={() => scrollTo("hero")}
           className="flex items-center"
         >
-          <Logo className="h-12 w-12 text-paper" />
+          <Logo className="h-16 w-16 text-paper" />
         </button>
         <button
           onClick={toggleHud}

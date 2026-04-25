@@ -48,6 +48,8 @@ export default function ProjectDeepScan({ project, onClose }: ProjectDeepScanPro
             </div>
             <button 
               onClick={onClose}
+              data-cursor
+              data-cursor-label="EXIT"
               className="p-2 hover:bg-acid/10 text-paper/40 hover:text-acid transition-all border border-transparent hover:border-acid/20"
             >
               <X size={20} />
@@ -65,6 +67,8 @@ export default function ProjectDeepScan({ project, onClose }: ProjectDeepScanPro
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
+                  data-cursor
+                  data-cursor-label="SELECT"
                   className={`w-full flex items-center gap-3 px-4 py-3 mono text-[11px] tracking-widest transition-all border ${
                     activeTab === tab.id 
                       ? "bg-acid/10 border-acid/30 text-acid" 

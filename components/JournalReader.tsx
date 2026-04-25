@@ -41,6 +41,8 @@ export default function JournalReader({ post, onClose }: JournalReaderProps) {
         <div className="sticky top-0 z-[12050] bg-ink/80 backdrop-blur-md border-b border-paper/10 px-6 py-4 flex items-center justify-between">
           <button 
             onClick={onClose}
+            data-cursor
+            data-cursor-label="EXIT"
             className="flex items-center gap-2 text-paper/60 hover:text-acid transition-colors group"
           >
             <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
@@ -54,9 +56,16 @@ export default function JournalReader({ post, onClose }: JournalReaderProps) {
             </div>
             <div className="h-4 w-px bg-paper/10 hidden md:block" />
             <div className="flex items-center gap-4">
-              <button className="text-paper/40 hover:text-paper transition-colors"><Share2 size={16} /></button>
-              <button className="text-paper/40 hover:text-paper transition-colors"><Bookmark size={16} /></button>
-              <button onClick={onClose} className="text-paper/40 hover:text-paper transition-colors pl-2 border-l border-paper/10"><X size={20} /></button>
+              <button data-cursor data-cursor-label="SHARE" className="text-paper/40 hover:text-paper transition-colors"><Share2 size={16} /></button>
+              <button data-cursor data-cursor-label="SAVE" className="text-paper/40 hover:text-paper transition-colors"><Bookmark size={16} /></button>
+              <button 
+                onClick={onClose} 
+                data-cursor
+                data-cursor-label="CLOSE"
+                className="text-paper/40 hover:text-paper transition-colors pl-2 border-l border-paper/10"
+              >
+                <X size={20} />
+              </button>
             </div>
           </div>
         </div>
@@ -93,6 +102,8 @@ export default function JournalReader({ post, onClose }: JournalReaderProps) {
             <div className="ui-label text-paper/20 text-[10px] tracking-[0.5em] uppercase mb-8">End_of_Transmission</div>
             <button 
               onClick={onClose}
+              data-cursor
+              data-cursor-label="CLOSE"
               className="brutal-heading text-paper hover:text-acid transition-colors text-3xl md:text-5xl"
             >
               CLOSE_READER

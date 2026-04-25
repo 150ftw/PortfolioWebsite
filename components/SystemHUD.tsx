@@ -3,7 +3,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Activity, Cpu, Shield, Wifi } from "lucide-react";
-
 import { useUI } from "./UIContext";
 
 export default function SystemHUD() {
@@ -45,7 +44,7 @@ export default function SystemHUD() {
             className="flex flex-col gap-4 overflow-hidden"
           >
             <motion.div 
-              className="bg-ink/60 backdrop-blur-md border border-paper/10 p-4 w-64 shadow-2xl"
+              className="bg-ink/60 backdrop-blur-md border border-paper/10 p-4 w-64 shadow-2xl pointer-events-auto"
             >
               <div className="flex items-center justify-between mb-4 pb-2 border-b border-paper/5">
                 <div className="flex items-center gap-2">
@@ -73,7 +72,7 @@ export default function SystemHUD() {
             </motion.div>
 
             <motion.div 
-              className="bg-acid/5 backdrop-blur-md border border-acid/20 p-3 w-64 flex items-center justify-between"
+              className="bg-acid/5 backdrop-blur-md border border-acid/20 p-3 w-64 flex items-center justify-between pointer-events-auto"
             >
               <div className="flex items-center gap-3">
                 <Activity size={14} className="text-acid" />

@@ -14,12 +14,13 @@ import { Github } from "lucide-react";
  *  On mobile/reduced-motion: falls back to vertical stacked panels.
  */
 
-export default function About() {
+export default function About({ booted }: { booted: boolean }) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const terminalInView = useRef<HTMLDivElement | null>(null);
   const inView = useInView(terminalInView, { once: true, amount: 0.4 });
   const [isDesktop, setIsDesktop] = useState(false);
+  const bioRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
     // Feature-detect once.
@@ -48,26 +49,42 @@ export default function About() {
         const track = trackRef.current;
         if (!section || !track) return;
 
-        // Total panels = 3. Scroll distance = 2 viewports.
         const panels = 3;
         
-        gsap.to(track, {
+        const trackTween = gsap.to(track, {
           x: () => -(window.innerWidth * (panels - 1)),
           ease: "none",
           scrollTrigger: {
             trigger: section,
+            pin: true,
             scrub: true,
             start: "top top",
-            end: "bottom bottom",
+            end: () => `+=${window.innerWidth * (panels - 1)}`,
             invalidateOnRefresh: true,
+            anticipatePin: 1,
           },
         });
 
-        const handleLoad = () => ScrollTrigger.refresh();
-        window.addEventListener("load", handleLoad);
-        // Clean up inside context revert or similar if needed, 
-        // but easier to manage as a one-off here.
+        // Bio character reveal
+        if (bioRef.current) {
+          const chars = bioRef.current.querySelectorAll(".bio-char");
+          gsap.to(chars, {
+            color: "#00FF94",
+            opacity: 1,
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: bioRef.current,
+              containerAnimation: trackTween,
+              start: "left 65%",
+              end: "left 15%",
+              scrub: true,
+            },
+          });
+        }
       }, sectionRef);
+
+      // Force a refresh once site is ready or window loads
+      ScrollTrigger.refresh();
     })();
 
     return () => {
@@ -76,27 +93,35 @@ export default function About() {
     };
   }, [isDesktop]);
 
+  // Handle refresh when boot sequence completes to ensure correct height calculations
+  useEffect(() => {
+    if (booted) {
+      const refresh = async () => {
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+        ScrollTrigger.refresh();
+      };
+      refresh();
+      // Small timeout to ensure all reveal animations have stabilized
+      const timer = setTimeout(refresh, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [booted]);
+
   return (
     <section
       id="about"
       ref={sectionRef}
       className="relative z-50 bg-ink"
-      style={{ height: isDesktop ? "300vh" : "auto" }}
     >
-      {/* Sticky viewport container */}
-      <div className={isDesktop ? "sticky top-0 h-[100svh] w-full overflow-hidden bg-ink" : "relative"}>
+      {/* Viewport container */}
+      <div className="relative h-auto md:h-[100svh] w-full overflow-hidden bg-ink">
         {/* The horizontal track */}
         <div
           ref={trackRef}
-          className={
-            isDesktop
-              ? "relative flex h-[100svh] w-max flex-nowrap will-change-transform bg-ink"
-              : "relative flex flex-col bg-ink"
-          }
+          className="relative flex flex-col md:flex-row h-auto md:h-[100svh] w-full md:w-max flex-nowrap md:will-change-transform bg-ink"
         >
         <div
-          className={`about-panel relative flex flex-col justify-center bg-paper text-ink overflow-hidden shrink-0 ${isDesktop ? "h-[100svh] w-screen px-[8vw]" : "min-h-[90vh] px-6 py-24"
-            }`}
+          className="about-panel relative flex flex-col justify-center bg-paper text-ink overflow-hidden shrink-0 h-auto md:h-[100svh] w-full md:w-screen px-6 py-24 md:px-[8vw]"
         >
           <BlueprintBackground />
           
@@ -169,40 +194,34 @@ export default function About() {
         </div>
 
         <div
-          className={`about-panel relative flex flex-col bg-ink text-paper shrink-0 ${isDesktop
-            ? "h-[100svh] w-screen flex-row items-center justify-between px-[8vw] py-20"
-            : "min-h-[90vh] px-6 py-24"
-            }`}
+          className="about-panel relative flex flex-col md:flex-row items-center justify-between bg-ink text-paper shrink-0 h-auto md:h-[100svh] w-full md:w-screen px-6 py-24 md:px-[8vw] md:py-20"
         >
           {/* Diagonal rule — subtle decorative element */}
-          {isDesktop && (
-            <div
-              className="absolute left-0 top-[40%] h-px w-[140%] origin-left rotate-[-15deg] bg-paper/5"
-              aria-hidden
-            />
-          )}
+          <div
+            className="absolute left-0 top-[40%] h-px w-[140%] origin-left rotate-[-15deg] bg-paper/5 hidden md:block"
+            aria-hidden
+          />
 
           {/* Bio */}
-          <div className={isDesktop ? "relative z-10 w-[42%] pr-12" : "mb-16"}>
+          <div className="md:relative md:z-10 md:w-[42%] md:pr-12 mb-16 md:mb-0">
             <p className="ui-label mb-6 text-paper/40" data-reveal>
               / 02 · BIO
             </p>
             <p
-              className="editorial italic leading-[1.65] text-paper/90"
-              style={{ fontSize: isDesktop ? "1.5rem" : "1.25rem" }}
-              data-reveal
+              ref={bioRef}
+              className="editorial italic leading-[1.65] text-paper/40 text-[1.25rem] md:text-[1.5rem]"
             >
-              <span className="text-acid not-italic font-bold">Co-founder</span>, builder, and
-              product-minded engineer based out of {owner.location}. My work
-              sits at the seam where finance meets machine intelligence — RAG
-              pipelines that reason over market data, retrieval systems that
-              turn raw filings into decisions, and interfaces that make it all
-              feel inevitable.
+              <span className="text-acid not-italic font-bold mr-1">Co-founder</span>
+              {"builder, and product-minded engineer based out of Gurugram, India. My work sits at the seam where finance meets machine intelligence — RAG pipelines that reason over market data, retrieval systems that turn raw filings into decisions, and interfaces that make it all feel inevitable.".split("").map((char, i) => (
+                <span key={i} className="bio-char transition-colors duration-300">
+                  {char}
+                </span>
+              ))}
             </p>
           </div>
 
           {/* Stats */}
-          <div className={isDesktop ? "grid w-[50%] grid-cols-2 gap-x-12 gap-y-16 relative z-10 pl-12 border-l border-paper/10" : "grid grid-cols-2 gap-6 relative z-10 pt-16 border-t border-paper/10"}>
+          <div className="grid grid-cols-2 gap-6 md:gap-x-12 md:gap-y-16 relative z-10 pt-16 md:pt-0 md:pl-12 border-t md:border-t-0 md:border-l border-paper/10 md:w-[50%]">
             {stats.map((stat) => (
               <div key={stat.label} className="group transition-colors duration-500" data-reveal>
                 <div className="flex justify-between items-start mb-2">
@@ -210,8 +229,7 @@ export default function About() {
                    <div className="h-1 w-1 rounded-full bg-paper/20 group-hover:bg-acid transition-colors" />
                 </div>
                 <div
-                  className="brutal-heading leading-none text-paper group-hover:text-acid transition-colors"
-                  style={{ fontSize: isDesktop ? "7vw" : "14vw" }}
+                  className="brutal-heading leading-none text-paper group-hover:text-acid transition-colors text-[14vw] md:text-[7vw]"
                 >
                   {stat.value}
                 </div>
@@ -227,8 +245,7 @@ export default function About() {
         </div>
 
         <div
-          className={`about-panel relative flex flex-col justify-center bg-ink text-paper shrink-0 ${isDesktop ? "h-[100svh] w-screen px-[6vw]" : "min-h-[90vh] px-6 py-24"
-            }`}
+          className="about-panel relative flex flex-col justify-center bg-ink text-paper shrink-0 h-auto md:h-[100svh] w-full md:w-screen px-6 py-24 md:px-[6vw]"
         >
           <p className="ui-label mb-8 text-paper/50" data-reveal>
             / 03 · SYSTEM STATUS
@@ -250,7 +267,7 @@ export default function About() {
                     shivam@portfolio — zsh — 80×24
                   </span>
                 </div>
-                <TerminalBlock play={inView} />
+                <TerminalBlock play={booted} />
               </div>
             </div>
 
@@ -491,18 +508,46 @@ function TerminalBlock({ play }: { play: boolean }) {
     setHistory((prev) => [...prev, { prompt: `shivam@portfolio ~ $ ${originalInput}`, output: response }]);
   };
 
+  const renderRawUrls = (text: string, keyPrefix: number) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const urlParts = text.split(urlRegex);
+    
+    return urlParts.map((part, i) => {
+      if (part.match(urlRegex)) {
+        const match = part.match(/^(https?:\/\/[^\s]+?)([.,!?\)\]]+)?$/);
+        const cleanUrl = match ? match[1] : part;
+        const trailing = match ? (match[2] || "") : "";
+        
+        return (
+          <span key={`raw-${keyPrefix}-${i}`}>
+            <a
+              href={cleanUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-acid hover:text-white transition-all"
+            >
+              {cleanUrl}
+            </a>
+            {trailing}
+          </span>
+        );
+      }
+      return part;
+    });
+  };
+
   const renderText = (text: string) => {
     const mdLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
     const parts = text.split(mdLinkRegex);
 
     if (parts.length > 1) {
-      const result = [];
+      const result: React.ReactNode[] = [];
       for (let i = 0; i < parts.length; i += 3) {
-        result.push(parts[i]);
+        result.push(<span key={`text-${i}`}>{renderRawUrls(parts[i], i)}</span>);
         if (i + 1 < parts.length) {
           result.push(
             <a
-              key={i}
+              key={`md-${i}`}
               href={parts[i + 2]}
               target="_blank"
               rel="noopener noreferrer"
@@ -516,24 +561,7 @@ function TerminalBlock({ play }: { play: boolean }) {
       return result;
     }
 
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const urlParts = text.split(urlRegex);
-    return urlParts.map((part, i) => {
-      if (part.match(urlRegex)) {
-        return (
-          <a
-            key={i}
-            href={part}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline text-acid hover:text-white transition-all"
-          >
-            {part}
-          </a>
-        );
-      }
-      return part;
-    });
+    return renderRawUrls(text, 0);
   };
 
   return (
@@ -571,7 +599,6 @@ function TerminalBlock({ play }: { play: boolean }) {
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             className="flex-grow bg-transparent outline-none caret-acid min-w-0"
-            autoFocus
             spellCheck={false}
             autoComplete="off"
           />

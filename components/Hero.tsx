@@ -227,7 +227,7 @@ export default function Hero({ booted }: { booted: boolean }) {
 
       <div className="absolute top-10 left-10 z-20 hidden md:flex flex-col gap-1 opacity-40">
         <span className="ui-label text-[9px] text-paper tracking-[0.4em]">LOC_COORD</span>
-        <span className="mono text-[8px] text-paper/60">28&deg;27&apos;34.2&quot;N 77&deg;01&apos;35.8&quot;E</span>
+        <span className="mono text-[8px] text-paper/60">{owner.coords}</span>
       </div>
 
       {/* Decorative vertical metadata */}

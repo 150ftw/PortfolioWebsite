@@ -44,7 +44,7 @@ export default function Home() {
 
       <main className="relative">
         <Hero booted={booted} />
-        <About />
+        <About booted={booted} />
         <Projects />
         <Skills />
         <Blog />
