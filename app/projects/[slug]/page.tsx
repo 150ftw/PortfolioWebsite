@@ -16,6 +16,10 @@ export default function ProjectCaseStudy({ params }: { params: { slug: string } 
   }
 
   const { caseStudy } = project;
+  
+  const currentIndex = projects.findIndex((p) => p.slug === params.slug);
+  const nextProject = currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
+  const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
 
   return (
     <main className="min-h-screen bg-ink text-paper selection:bg-acid selection:text-ink">
@@ -157,19 +161,46 @@ export default function ProjectCaseStudy({ params }: { params: { slug: string } 
       </section>
 
       {/* Footer CTA */}
-      <footer className="py-32 px-6 text-center border-t border-paper/10">
-        <h3 className="ui-label text-paper/20 tracking-[0.5em] mb-12 uppercase">End_of_Transmission</h3>
+      <footer className="py-24 px-6 border-t border-paper/10 flex flex-col items-center">
+        <h3 className="ui-label text-paper/20 tracking-[0.5em] mb-16 uppercase">End_of_Transmission</h3>
+        
+        <div className="w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-px bg-paper/10 mb-20">
+          {prevProject ? (
+            <Link 
+              href={`/projects/${prevProject.slug}`}
+              className="group relative bg-ink p-12 md:p-20 flex flex-col items-start transition-colors hover:bg-paper/5"
+            >
+               <span className="ui-label text-[10px] text-paper/30 mb-4 tracking-widest">PREVIOUS_PROJECT</span>
+               <div className="brutal-heading text-4xl md:text-6xl group-hover:text-acid transition-colors">
+                 {prevProject.name} <span className="opacity-50">{prevProject.accent}</span>
+               </div>
+            </Link>
+          ) : (
+            <div className="bg-ink p-12 md:p-20 hidden md:block" />
+          )}
+
+          {nextProject ? (
+            <Link 
+              href={`/projects/${nextProject.slug}`}
+              className="group relative bg-ink p-12 md:p-20 flex flex-col items-end text-right transition-colors hover:bg-paper/5"
+            >
+               <span className="ui-label text-[10px] text-paper/30 mb-4 tracking-widest">NEXT_PROJECT</span>
+               <div className="brutal-heading text-4xl md:text-6xl group-hover:text-acid transition-colors">
+                 {nextProject.name} <span className="opacity-50">{nextProject.accent}</span>
+               </div>
+            </Link>
+          ) : (
+            <div className="bg-ink p-12 md:p-20 hidden md:block" />
+          )}
+        </div>
+
         <Link 
           href="/#projects"
-          className="group inline-flex flex-col items-center gap-6"
+          className="group flex items-center gap-3 text-paper/40 hover:text-acid transition-colors"
         >
-          <div className="brutal-heading text-5xl md:text-8xl hover:text-acid transition-colors cursor-pointer">
-            NEXT_PROJECT
-          </div>
-          <div className="flex items-center gap-2 text-paper/40 group-hover:text-acid transition-colors">
-            <span className="ui-label text-[10px] tracking-widest uppercase">Return_to_Main_Frame</span>
-            <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </div>
+          <div className="h-px w-8 bg-current opacity-20" />
+          <span className="ui-label text-[11px] tracking-[0.4em] uppercase">Return_to_Main_Frame</span>
+          <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
         </Link>
       </footer>
     </main>
