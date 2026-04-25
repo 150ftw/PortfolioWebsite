@@ -111,6 +111,20 @@ export default function Navbar() {
           })}
         </ul>
 
+        {/* Resume / CV Link */}
+        <div className="mb-6 rotate-[-90deg] origin-center">
+          <a
+            href={owner.resume}
+            target="_blank"
+            rel="noreferrer"
+            data-cursor
+            data-cursor-label="RESUME"
+            className="ui-label text-[9px] tracking-[0.4em] text-paper/40 hover:text-acid transition-colors"
+          >
+            RESUME_v1.0
+          </a>
+        </div>
+
         {/* Socials */}
         <div className="flex flex-col items-center gap-4">
           {socials.map(({ icon: Icon, href, label }) => (
@@ -179,9 +193,19 @@ export default function Navbar() {
                   </span>
                 </motion.button>
               ))}
-              <div className="mt-6 space-y-1 ui-label text-ink/80">
-                <div>{owner.location}</div>
-                <div className="mono text-[10px] normal-case tracking-normal">{owner.email}</div>
+              <div className="mt-8 pt-8 border-t border-ink/10 space-y-4">
+                <a 
+                  href={owner.resume} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="inline-block brutal-heading text-[10vw] leading-none text-ink underline decoration-ink/20"
+                >
+                  GET CV
+                </a>
+                <div className="ui-label text-ink/80 space-y-1">
+                  <div>{owner.location}</div>
+                  <div className="mono text-[10px] normal-case tracking-normal">{owner.email}</div>
+                </div>
               </div>
             </div>
             {/* RIGHT — generative noise */}

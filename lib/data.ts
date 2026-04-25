@@ -18,6 +18,7 @@ export const owner = {
   phone: "+91 96675 10634",
   github: "https://github.com/150ftw",
   linkedin: "https://www.linkedin.com/in/shivam-sharma-331945284/",
+  resume: "https://drive.google.com/file/d/1A5YhiQ7tkVYGrJHLcmledmJmo6Tja8Z8/view?usp=sharing",
   discord: "https://discord.com/users/453869754944585738",
   instagram: "https://www.instagram.com/shiv_mmm/",
   bio: "I build AI-powered products at the intersection of finance and technology. Co-founder of EcoInsight.AI — an AI-driven stock analytics platform for retail investors. I work across the full stack with deep focus on Web3/Solidity, RAG pipelines, Docker, and AWS.",

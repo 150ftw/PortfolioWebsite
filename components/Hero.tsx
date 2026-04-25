@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { owner } from "@/lib/data";
 
 /**
@@ -147,12 +148,24 @@ export default function Hero({ booted }: { booted: boolean }) {
           transition={{ delay: 0.9, duration: 0.7 }}
         />
         <motion.p
-          className="ui-label mt-4 text-paper/60"
-          initial={{ opacity: 0, y: 8 }}
+          className="ui-label mt-4 text-paper/60 flex items-center gap-6"
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.5 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
         >
-          {owner.roleLine}
+          <span>{owner.roleLine}</span>
+          
+          <a 
+            href={owner.resume} 
+            target="_blank" 
+            rel="noreferrer"
+            data-cursor
+            data-cursor-label="RESUME"
+            className="hidden md:flex items-center gap-2 group/cv text-paper hover:text-acid transition-colors border-l border-paper/20 pl-6"
+          >
+            <span className="underline underline-offset-4 decoration-paper/30 group-hover/cv:decoration-acid">DOWNLOAD CV</span>
+            <ArrowUpRight size={12} className="transition-transform group-hover/cv:-translate-y-0.5 group-hover/cv:translate-x-0.5" />
+          </a>
         </motion.p>
       </div>
 
