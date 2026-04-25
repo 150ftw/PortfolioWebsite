@@ -216,8 +216,8 @@ export default function Hero({ booted }: { booted: boolean }) {
         </div>
       </motion.div>
 
-      {/* NEW: HUD Decorative Elements */}
-      <div className="absolute top-6 right-6 md:top-10 md:right-10 z-20 flex flex-col items-end gap-1 opacity-40">
+      {/* NEW: HUD Decorative Elements — moved to bottom on mobile to avoid overlap with large text */}
+      <div className="absolute bottom-24 right-6 md:top-10 md:right-10 z-20 flex flex-col items-end gap-1 opacity-40">
         <div className="flex items-center gap-2">
           <div className="h-1.5 w-1.5 rounded-full bg-acid animate-pulse" />
           <span className="ui-label text-[9px] text-paper tracking-[0.4em]">FRAME_SYNC: OK</span>
@@ -225,7 +225,7 @@ export default function Hero({ booted }: { booted: boolean }) {
         <span className="mono text-[8px] text-paper/60">60FPS // SHVM_OS_v1.0.4</span>
       </div>
 
-      <div className="absolute top-6 left-6 md:top-10 md:left-10 z-20 flex flex-col gap-1 opacity-40">
+      <div className="absolute bottom-24 left-6 md:top-10 md:left-10 z-20 flex flex-col gap-1 opacity-40">
         <span className="ui-label text-[9px] text-paper tracking-[0.4em]">LOC_COORD</span>
         <span className="mono text-[8px] text-paper/60">{owner.coords}</span>
       </div>

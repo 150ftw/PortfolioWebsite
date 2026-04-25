@@ -125,7 +125,7 @@ export default function About({ booted }: { booted: boolean }) {
         >
           <BlueprintBackground />
           
-          <div className="relative z-10 brutal-heading text-ink" style={{ fontSize: "clamp(3rem, 12vw, 14rem)", lineHeight: 0.85 }}>
+          <div className="relative z-10 brutal-heading text-ink mt-20 md:mt-0" style={{ fontSize: "clamp(3rem, 12vw, 14rem)", lineHeight: 0.85 }}>
             <motion.div 
               data-reveal 
               initial={{ opacity: 0, x: -40 }} 
@@ -169,7 +169,7 @@ export default function About({ booted }: { booted: boolean }) {
           </div>
 
           {/* HUD Metadata */}
-          <div className="absolute top-24 left-[8vw] flex flex-col md:flex-row gap-6 md:gap-12">
+          <div className="absolute top-8 left-6 md:top-12 md:left-[8vw] flex flex-col md:flex-row gap-4 md:gap-12">
             <div className="flex flex-col gap-1">
               <span className="ui-label text-[9px] text-ink/40 uppercase">Viewport_Coord</span>
               <DynamicCoord />
