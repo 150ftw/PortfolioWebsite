@@ -53,6 +53,12 @@ export default function Contact() {
       style={{ backgroundColor: bg }}
       className="relative flex min-h-[100svh] w-full flex-col items-center justify-center overflow-hidden px-6 py-32 text-paper"
     >
+      {/* Top label */}
+      <div className="absolute top-10 left-0 right-0 z-10 flex w-full items-center justify-between px-6 md:px-[8vw]">
+        <div className="ui-label text-paper/30 tracking-[0.4em]">INIT_CONN</div>
+        <div className="ui-label text-paper/30">/ 05 · CONTACT</div>
+      </div>
+
       {/* Giant type */}
       <div className="text-center">
         <motion.div

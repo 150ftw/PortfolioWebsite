@@ -245,9 +245,10 @@ export type NavSection = {
 export const navSections: NavSection[] = [
   { id: "hero", label: "INDEX", number: "00" },
   { id: "about", label: "ABOUT", number: "01" },
-  { id: "skills", label: "SKILLS", number: "02" },
-  { id: "blog", label: "JOURNAL", number: "03" },
-  { id: "contact", label: "CONTACT", number: "04" },
+  { id: "projects", label: "PROJECTS", number: "02" },
+  { id: "skills", label: "SKILLS", number: "03" },
+  { id: "blog", label: "JOURNAL", number: "04" },
+  { id: "contact", label: "CONTACT", number: "05" },
 ];
 
 export const terminalLines: { prompt: string; output: string }[] = [

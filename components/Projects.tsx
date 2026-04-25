@@ -58,7 +58,7 @@ export default function Projects() {
 
       {/* Floating label — high z-index, mix-blend so it's always legible */}
       <div className="pointer-events-none sticky top-0 z-50 flex w-full items-center justify-between px-6 py-5 mix-blend-difference">
-        <span className="ui-label text-white/60">/ SELECTED_WORK</span>
+        <span className="ui-label text-white/60">/ 02 · SELECTED_WORK</span>
         <span className="ui-label text-white/60">01 — 0{projects.length}</span>
       </div>
 
