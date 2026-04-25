@@ -199,6 +199,17 @@ export default function Hero({ booted }: { booted: boolean }) {
         transition={{ delay: 1.3, duration: 0.6 }}
       >
         <div>&gt; location: {owner.location.toLowerCase()}</div>
+        <div className="flex gap-2">
+          &gt; resume: 
+          <a 
+            href={owner.resume} 
+            target="_blank" 
+            rel="noreferrer" 
+            className="text-acid hover:underline underline-offset-2"
+          >
+            cv_sharma_v1.0
+          </a>
+        </div>
         <div>
           &gt; status: building
           <span className="ml-0.5 inline-block h-3 w-[7px] -translate-y-[1px] bg-acid align-middle animate-blink" />

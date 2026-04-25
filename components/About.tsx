@@ -465,7 +465,7 @@ function TerminalBlock({ play }: { play: boolean }) {
         break;
       case "cat resume.pdf":
       case "open resume.pdf":
-        response = "ACCESSING_STORAGE: [Click to view resume](https://drive.google.com/file/d/1titvNBBECHSbFHTQVI7mnvXloDjLPene/view?usp=sharing)";
+        response = `ACCESSING_STORAGE: [Click to view resume](${owner.resume})`;
         break;
       case "whoami":
         response = "SHIVAM_SHARMA: Full-Stack Developer & AI Builder. Co-founder @ EcoInsight.AI.";
@@ -474,7 +474,15 @@ function TerminalBlock({ play }: { play: boolean }) {
         setHistory([]);
         return;
       case "contact":
-        response = "EMAIL: ss18244646@gmail.com | Instagram: @shiv_mmm";
+      case "cat contact.json":
+        response = [
+          "{",
+          `  "email": "${owner.email}",`,
+          `  "location": "${owner.location}",`,
+          `  "github": "${owner.github}",`,
+          `  "status": "available_for_collab"`,
+          "}"
+        ];
         break;
       default:
         response = `Command not found: ${cmd}. Type 'help' for options.`;
