@@ -87,8 +87,8 @@ export const projects: Project[] = [
   },
   {
     number: "03",
-    name: "WAITLIST",
-    accent: "LIVE",
+    name: "ECOINSIGHT",
+    accent: "WAITLIST",
     tagline: "HIGH-CONVERTING LAUNCH PAGE",
     description:
       "A waitlist system engineered to capture early users, validate demand, and compound launch momentum for EcoInsight.AI. Pixel-perfect on every viewport, zero friction on signup.",

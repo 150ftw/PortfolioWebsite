@@ -185,7 +185,7 @@ function NameCol({
         {project.tagline}
       </p>
 
-      <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-6">
+      <div className="relative z-30 mt-8 flex flex-wrap items-center gap-x-8 gap-y-6">
         <div className="flex flex-wrap gap-6">
           {project.github && (
             <a
