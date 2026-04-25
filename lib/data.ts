@@ -234,6 +234,33 @@ export const blogPosts: BlogPost[] = [
     readTime: "10 MIN READ",
     accent: "acid",
   },
+  {
+    number: "04",
+    title: "The Future of Agentic Workflows in Enterprise",
+    excerpt:
+      "Beyond simple chatbots — how autonomous agents are beginning to handle complex, multi-step business logic and decision-making pipelines.",
+    category: "AI / ENG",
+    readTime: "15 MIN READ",
+    accent: "danger",
+  },
+  {
+    number: "05",
+    title: "Scaling Next.js Apps with Edge Functions",
+    excerpt:
+      "Why the edge is the future of the web. A deep dive into middleware, streaming SSR, and low-latency data fetching at the global scale.",
+    category: "DEV",
+    readTime: "9 MIN READ",
+    accent: "acid",
+  },
+  {
+    number: "06",
+    title: "DeFi 2.0: Lessons from the Liquidity Crunch",
+    excerpt:
+      "An analysis of protocol-owned liquidity, yield optimization strategies, and the systemic risks that defined the second wave of decentralized finance.",
+    category: "WEB3",
+    readTime: "11 MIN READ",
+    accent: "danger",
+  },
 ];
 
 export type NavSection = {

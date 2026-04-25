@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { blogPosts } from "@/lib/data";
+import { blogPosts, type BlogPost } from "@/lib/data";
 
 /**
  * Blog — editorial magazine layout, asymmetric newspaper grid.
@@ -11,7 +12,23 @@ import { blogPosts } from "@/lib/data";
  *  - A thin vertical rule divides left and right columns.
  */
 export default function Blog() {
-  const [lede, ...rest] = blogPosts;
+  const [displayPosts, setDisplayPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    // Shuffle and pick 3
+    const shuffled = [...blogPosts]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3)
+      .map((post, i) => ({
+        ...post,
+        number: `0${i + 1}`, // Re-index for visual consistency
+      }));
+    setDisplayPosts(shuffled);
+  }, []);
+
+  if (displayPosts.length === 0) return null;
+
+  const [lede, ...rest] = displayPosts;
 
   return (
     <section
