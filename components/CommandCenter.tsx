@@ -36,14 +36,31 @@ export default function CommandCenter() {
       setPlatform("windows");
     }
 
-    const hasOpened = localStorage.getItem("commandCenterOpened");
-    if (hasOpened) return;
+    const handleFirstClick = () => {
+      // Check if it has already been shown in THIS session (tab)
+      const hasShownThisSession = sessionStorage.getItem("commandTipShown");
+      if (hasShownThisSession) return;
 
-    const timer = setTimeout(() => {
-      setShowTip(true);
-    }, 10000);
+      // Also respect the global 'opened' state from localStorage
+      const hasOpened = localStorage.getItem("commandCenterOpened");
+      if (hasOpened) return;
 
-    return () => clearTimeout(timer);
+      setTimeout(() => {
+        console.log("CMD+K Tip Triggered (Fresh Session)");
+        setShowTip(true);
+        const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+        audio.volume = 0.15;
+        audio.play().catch(err => console.log("Audio play blocked:", err));
+        
+        // Mark as shown for this session
+        sessionStorage.setItem("commandTipShown", "true");
+      }, 6000);
+
+      window.removeEventListener("click", handleFirstClick);
+    };
+
+    window.addEventListener("click", handleFirstClick);
+    return () => window.removeEventListener("click", handleFirstClick);
   }, []);
 
   useEffect(() => {
@@ -84,7 +101,7 @@ export default function CommandCenter() {
 
   const handleCommand = async (cmd: string) => {
     const c = cmd.toLowerCase().trim();
-    
+
     // System Commands
     if (c.startsWith("goto ")) {
       const target = c.replace("goto ", "");
@@ -165,7 +182,7 @@ export default function CommandCenter() {
                   }
                   return prev;
                 });
-              } catch (e) {}
+              } catch (e) { }
             }
           }
         }
@@ -188,19 +205,19 @@ export default function CommandCenter() {
   const renderRawUrls = (text: string, keyPrefix: number) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const urlParts = text.split(urlRegex);
-    
+
     return urlParts.map((part, i) => {
       if (part.match(urlRegex)) {
         // Handle trailing punctuation: . , ! ? ) ]
         const match = part.match(/^(https?:\/\/[^\s]+?)([.,!?\)\]]+)?$/);
         const cleanUrl = match ? match[1] : part;
         const trailing = match ? (match[2] || "") : "";
-        
+
         return (
           <span key={`raw-${keyPrefix}-${i}`}>
-            <a 
-              href={cleanUrl} 
-              target="_blank" 
+            <a
+              href={cleanUrl}
+              target="_blank"
               rel="noopener noreferrer"
               className="text-acid underline underline-offset-2 hover:text-acid/80 transition-colors break-all"
               data-cursor
@@ -226,7 +243,7 @@ export default function CommandCenter() {
       for (let i = 0; i < parts.length; i += 3) {
         // Text part (processed for raw URLs)
         result.push(<span key={`text-${i}`}>{renderRawUrls(parts[i], i)}</span>);
-        
+
         // Link part
         if (i + 1 < parts.length) {
           result.push(
@@ -280,7 +297,7 @@ export default function CommandCenter() {
                   {mode === 'command' ? 'System_Command_Center' : 'Eko_AI_Assistant'}
                 </span>
               </div>
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="text-paper/40 hover:text-paper transition-colors"
               >
@@ -289,7 +306,7 @@ export default function CommandCenter() {
             </div>
 
             {/* Content Area */}
-            <div 
+            <div
               ref={scrollRef}
               className="h-[350px] overflow-y-auto p-4 space-y-4 scrollbar-hide bg-ink/20"
             >
@@ -300,11 +317,10 @@ export default function CommandCenter() {
                   animate={{ opacity: 1, x: 0 }}
                   className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[85%] p-3 rounded-sm mono text-[12px] leading-relaxed ${
-                    m.role === 'user' 
-                      ? 'bg-paper/5 text-paper border border-paper/10' 
+                  <div className={`max-w-[85%] p-3 rounded-sm mono text-[12px] leading-relaxed ${m.role === 'user'
+                      ? 'bg-paper/5 text-paper border border-paper/10'
                       : 'bg-acid/5 text-acid border border-acid/10'
-                  }`}>
+                    }`}>
                     {m.role === 'assistant' && <span className="mr-2 opacity-50">🤖</span>}
                     {renderMessageContent(m.content)}
                   </div>
@@ -364,17 +380,17 @@ export default function CommandCenter() {
       <AnimatePresence>
         {showTip && !isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 50, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: 20, x: "-50%" }}
-            className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[5000] px-6 py-4 bg-ink/90 border border-acid/30 backdrop-blur-md shadow-2xl flex items-center gap-6 group pointer-events-auto"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            className="fixed top-8 right-8 z-[10001] px-6 py-4 bg-ink/90 border border-acid/30 backdrop-blur-md shadow-2xl flex items-center gap-6 group pointer-events-auto"
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-acid/10 flex items-center justify-center text-acid animate-pulse">
                 <Terminal size={16} />
               </div>
               <div className="flex flex-col">
-                <span className="mono text-[10px] text-acid/60 tracking-[0.2em] uppercase mb-0.5">System_Discovery</span>
+                <span className="mono text-[10px] text-acid/60 tracking-[0.2em] uppercase mb-0.5">System_Alert</span>
                 <span className="text-sm font-medium text-paper/90 tracking-tight">
                   {platform === "mobile" ? (
                     "Tap the terminal icon to access the AI Command Center"
@@ -386,7 +402,7 @@ export default function CommandCenter() {
                 </span>
               </div>
             </div>
-            <button 
+            <button
               onClick={() => setShowTip(false)}
               className="p-1 hover:text-acid text-paper/30 transition-colors"
             >
