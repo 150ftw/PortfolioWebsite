@@ -34,7 +34,7 @@ export default function SystemHUD() {
   }, []);
 
   return (
-    <div className="fixed bottom-6 left-6 z-[9000] hidden lg:flex flex-col gap-4 pointer-events-none">
+    <div className="fixed bottom-24 left-6 md:bottom-6 md:left-6 z-[9000] flex flex-col gap-4 pointer-events-none">
       <AnimatePresence>
         {isHudVisible && (
           <motion.div
