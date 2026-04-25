@@ -122,10 +122,6 @@ function ProjectPanel({ project, index }: { project: Project; index: number }) {
         } as React.CSSProperties}
       >
         {/* Corner Markers for consistency */}
-        <div className="absolute top-12 left-6 w-8 h-8 border-t border-l opacity-20 pointer-events-none hidden md:block" style={{ borderColor: text }} />
-        <div className="absolute top-12 right-6 w-8 h-8 border-t border-r opacity-20 pointer-events-none hidden md:block" style={{ borderColor: text }} />
-        <div className="absolute bottom-16 left-6 w-8 h-8 border-b border-l opacity-20 pointer-events-none hidden md:block" style={{ borderColor: text }} />
-        <div className="absolute bottom-16 right-6 w-8 h-8 border-b border-r opacity-20 pointer-events-none hidden md:block" style={{ borderColor: text }} />
 
         {/* ── Two-column layout ── */}
         <div
@@ -189,43 +185,58 @@ function NameCol({
         {project.tagline}
       </p>
 
-      <div className="mt-8 flex flex-wrap gap-8">
-        {project.github && (
-          <a
-            href={project.github}
-            target="_blank"
-            rel="noreferrer"
-            data-cursor
-            data-cursor-label="GITHUB"
-            className="group/link inline-flex items-center gap-2 text-sm"
-          >
-            <span className="underline underline-offset-8 decoration-current/30 transition-colors group-hover/link:decoration-acid group-hover/link:text-acid">
-              GITHUB
+      <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-6">
+        <div className="flex flex-wrap gap-6">
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor
+              data-cursor-label="GITHUB"
+              className="group/link inline-flex items-center gap-2 text-sm"
+            >
+              <span className="underline underline-offset-8 decoration-current/30 transition-colors group-hover/link:decoration-acid group-hover/link:text-acid">
+                GITHUB
+              </span>
+              <ArrowUpRight
+                size={14}
+                className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 group-hover/link:text-acid"
+              />
+            </a>
+          )}
+          {project.live && (
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor
+              data-cursor-label="LIVE"
+              className="group/link inline-flex items-center gap-2 text-sm"
+            >
+              <span className="underline underline-offset-8 decoration-current/30 transition-colors group-hover/link:decoration-acid group-hover/link:text-acid">
+                LIVE SITE
+              </span>
+              <ArrowUpRight
+                size={14}
+                className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 group-hover/link:text-acid"
+              />
+            </a>
+          )}
+        </div>
+
+        {/* Tech Stack Chips */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-l border-paper/10 pl-8">
+          <span className="ui-label text-[8px] text-paper/30 uppercase tracking-widest mr-1">STACK</span>
+          {project.stack.map((s) => (
+            <span 
+              key={s} 
+              className="mono text-[10px] text-paper/70 bg-paper/5 px-2 py-0.5 rounded-sm border border-paper/10"
+            >
+              {s}
             </span>
-            <ArrowUpRight
-              size={14}
-              className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 group-hover/link:text-acid"
-            />
-          </a>
-        )}
-        {project.live && (
-          <a
-            href={project.live}
-            target="_blank"
-            rel="noreferrer"
-            data-cursor
-            data-cursor-label="LIVE"
-            className="group/link inline-flex items-center gap-2 text-sm"
-          >
-            <span className="underline underline-offset-8 decoration-current/30 transition-colors group-hover/link:decoration-acid group-hover/link:text-acid">
-              LIVE SITE
-            </span>
-            <ArrowUpRight
-              size={14}
-              className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 group-hover/link:text-acid"
-            />
-          </a>
-        )}
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -295,18 +306,6 @@ function InfoCol({
           {project.description}
         </p>
 
-        <div className="mt-5 pt-4 border-t border-[var(--panel-border)]">
-          <div className="ui-label mb-2 text-[10px]" style={{ color: muted }}>
-            STACK
-          </div>
-          <div className="mono flex flex-wrap gap-x-3 gap-y-1.5 text-[11px]">
-            {project.stack.map((s) => (
-              <span key={s} style={{ color: text, opacity: 0.85 }}>
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
