@@ -15,7 +15,6 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandCenter from "@/components/CommandCenter";
 import SystemHUD from "@/components/SystemHUD";
-import JournalReader from "@/components/JournalReader";
 
 export default function Home() {
   const [booted, setBooted] = useState<boolean | null>(null);
@@ -59,7 +58,6 @@ export default function Home() {
       {/* OS Layer Components */}
       <CommandCenter />
       <SystemHUD />
-      <JournalReader />
     </>
   );
 }
