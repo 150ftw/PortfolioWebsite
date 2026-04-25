@@ -23,6 +23,36 @@ export default function CommandCenter() {
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const [showTip, setShowTip] = useState(false);
+  const [platform, setPlatform] = useState<"mac" | "windows" | "mobile">("windows");
+
+  useEffect(() => {
+    const ua = typeof window !== "undefined" ? window.navigator.userAgent.toLowerCase() : "";
+    if (ua.includes("iphone") || ua.includes("android") || ua.includes("ipad")) {
+      setPlatform("mobile");
+    } else if (ua.includes("mac")) {
+      setPlatform("mac");
+    } else {
+      setPlatform("windows");
+    }
+
+    const hasOpened = localStorage.getItem("commandCenterOpened");
+    if (hasOpened) return;
+
+    const timer = setTimeout(() => {
+      setShowTip(true);
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShowTip(false);
+      localStorage.setItem("commandCenterOpened", "true");
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -330,6 +360,42 @@ export default function CommandCenter() {
           </motion.div>
         </div>
       )}
+      {/* CMD+K Tip Popup */}
+      <AnimatePresence>
+        {showTip && !isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: 20, x: "-50%" }}
+            className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[5000] px-6 py-4 bg-ink/90 border border-acid/30 backdrop-blur-md shadow-2xl flex items-center gap-6 group pointer-events-auto"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-acid/10 flex items-center justify-center text-acid animate-pulse">
+                <Terminal size={16} />
+              </div>
+              <div className="flex flex-col">
+                <span className="mono text-[10px] text-acid/60 tracking-[0.2em] uppercase mb-0.5">System_Discovery</span>
+                <span className="text-sm font-medium text-paper/90 tracking-tight">
+                  {platform === "mobile" ? (
+                    "Tap the terminal icon to access the AI Command Center"
+                  ) : (
+                    <>
+                      Press <kbd className="px-2 py-0.5 rounded bg-paper/10 border border-paper/20 text-[11px] font-mono text-acid mx-1">{platform === "mac" ? "⌘" : "Ctrl"}</kbd> + <kbd className="px-2 py-0.5 rounded bg-paper/10 border border-paper/20 text-[11px] font-mono text-acid">K</kbd> to access the Command Center
+                    </>
+                  )}
+                </span>
+              </div>
+            </div>
+            <button 
+              onClick={() => setShowTip(false)}
+              className="p-1 hover:text-acid text-paper/30 transition-colors"
+            >
+              <X size={14} />
+            </button>
+            <div className="absolute -bottom-1 left-0 h-[2px] bg-acid animate-[scan_2s_ease-in-out_infinite]" style={{ width: '100%' }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </AnimatePresence>
   );
 }
