@@ -56,7 +56,7 @@ export default function Contact() {
       {/* Top label */}
       <div className="absolute top-10 left-0 right-0 z-10 flex w-full items-center justify-between px-6 md:px-[8vw]">
         <div className="ui-label text-paper/30 tracking-[0.4em]">INIT_CONN</div>
-        <div className="ui-label text-paper/30">/ 05 · CONTACT</div>
+        <div className="ui-label text-paper/30">/ 04 · CONTACT</div>
       </div>
 
       {/* Giant type */}

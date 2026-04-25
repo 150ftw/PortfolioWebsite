@@ -39,7 +39,7 @@ export default function Skills() {
 
       {/* Small top label */}
       <div className="relative z-10 mb-16 px-6 md:px-[6vw]">
-        <div className="ui-label text-paper/50">/ 03 · CAPABILITIES</div>
+        <div className="ui-label text-paper/50">/ 02 · CAPABILITIES</div>
       </div>
 
       <div className="relative z-10 flex flex-col gap-6 md:gap-8">

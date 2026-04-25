@@ -23,7 +23,7 @@ export default function Blog() {
         <div className="ui-label tracking-[0.3em] text-paper/60">
           THOUGHT_STREAM
         </div>
-        <div className="ui-label text-paper/40">/ 04 · JOURNAL</div>
+        <div className="ui-label text-paper/40">/ 03 · JOURNAL</div>
       </div>
 
       <div className="relative grid grid-cols-1 gap-12 md:grid-cols-12">
@@ -41,11 +41,10 @@ export default function Blog() {
           transition={{ duration: 0.7 }}
           className="md:col-span-7 md:pr-10"
         >
-          <a
-            href="#"
+          <div
             data-cursor
-            data-cursor-label="READ"
-            className="group block"
+            data-cursor-label="COMING SOON"
+            className="group block cursor-default"
           >
             <div
               className="brutal-heading text-acid"
@@ -73,7 +72,7 @@ export default function Blog() {
                 className="text-paper/60 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-acid"
               />
             </div>
-          </a>
+          </div>
         </motion.article>
 
         {/* RIGHT 5 columns — posts 02 & 03 stacked */}
@@ -87,11 +86,10 @@ export default function Blog() {
               transition={{ duration: 0.6, delay: 0.1 + i * 0.1 }}
               className={i === 0 ? "" : "border-t border-paper/20 pt-10"}
             >
-              <a
-                href="#"
+              <div
                 data-cursor
-                data-cursor-label="READ"
-                className="group block"
+                data-cursor-label="COMING SOON"
+                className="group block cursor-default"
               >
                 <div
                   className={`brutal-heading ${
@@ -122,7 +120,7 @@ export default function Blog() {
                     {post.readTime}
                   </span>
                 </div>
-              </a>
+              </div>
             </motion.article>
           ))}
         </div>
