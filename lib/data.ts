@@ -13,6 +13,7 @@ export const owner = {
     "Co-Founder",
   ],
   roleLine: "FULL-STACK DEVELOPER · AI BUILDER · CO-FOUNDER",
+  status: "Open for Freelance and Collaborations on Projects",
   location: "Gurugram, India",
   coords: "28.4147° N, 77.0884° E",
   dob: "24 April 2004",

@@ -41,6 +41,7 @@ export async function POST(req: Request) {
       - Full Name: ${owner.name}
       - Birthday: ${owner.dob}
       - Current Age: ${owner.age} years old
+      - Professional Status: ${owner.status}
       - Roles: ${owner.roles.join(", ")}
       - Bio: ${owner.bio}
       
