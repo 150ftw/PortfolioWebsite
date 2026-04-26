@@ -191,31 +191,23 @@ export default function CommandCenter() {
     setPlatform(isMobile ? "mobile" : ua.includes("mac") ? "mac" : "windows");
 
     const triggerTip = () => {
-      if (sessionStorage.getItem("commandTipShown") || localStorage.getItem("commandCenterOpened")) return;
+      // Still respect if they've already opened it in this session to avoid being annoying
+      if (localStorage.getItem("commandCenterOpened")) return;
       
-      console.log("Triggering Command Tip...");
       setShowTip(true);
+      
+      // Play a subtle notification sound
       const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
       audio.volume = 0.15;
-      audio.play().catch(err => console.log("Audio play blocked:", err));
+      audio.play().catch(err => console.log("Audio play blocked by browser policy:", err));
       
-      sessionStorage.setItem("commandTipShown", "true");
+      // Hide after exactly 5 seconds
       setTimeout(() => setShowTip(false), 5000);
     };
 
-    if (isMobile) {
-      // Auto-trigger on mobile/iPad after 12s
-      const timer = setTimeout(triggerTip, 12000);
-      return () => clearTimeout(timer);
-    } else {
-      // Desktop: wait for first click, then trigger after 6s
-      const handleFirstClick = () => {
-        setTimeout(triggerTip, 6000);
-        window.removeEventListener("click", handleFirstClick);
-      };
-      window.addEventListener("click", handleFirstClick);
-      return () => window.removeEventListener("click", handleFirstClick);
-    }
+    // Automatically trigger after 10 seconds for everyone
+    const timer = setTimeout(triggerTip, 10000);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
