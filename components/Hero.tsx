@@ -397,69 +397,68 @@ function MusicPlayer() {
           preload="auto"
           onEnded={() => setIsPlaying(false)}
         />
-      
-      <motion.button
-        onClick={togglePlay}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="h-12 w-12 rounded-full border border-paper/20 bg-paper/5 flex items-center justify-center text-paper hover:border-acid hover:text-acid transition-colors relative"
-      >
-        <AnimatePresence mode="wait">
-          {isPlaying ? (
-            <motion.div
-              key="pause"
-              initial={{ opacity: 0, rotate: -90 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              exit={{ opacity: 0, rotate: 90 }}
-            >
-              <Pause size={18} fill="currentColor" />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="play"
-              initial={{ opacity: 0, rotate: 90 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              exit={{ opacity: 0, rotate: -90 }}
-            >
-              <Play size={18} fill="currentColor" className="ml-0.5" />
-            </motion.div>
-          )}
-        </AnimatePresence>
         
-        {/* Pulsing ring when playing */}
-        {isPlaying && (
-          <motion.div 
-            className="absolute -inset-1 rounded-full border border-acid/30"
-            animate={{ scale: [1, 1.3], opacity: [0.3, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-        )}
-      </motion.button>
-
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2">
-          <span className="ui-label text-[10px] text-paper/80 tracking-[0.2em] uppercase">Now Playing</span>
-          <div className="flex gap-[2px] h-2 items-end">
-            {[...Array(4)].map((_, i) => (
+        <motion.button
+          onClick={togglePlay}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="h-12 w-12 rounded-full border border-paper/20 bg-paper/5 flex items-center justify-center text-paper hover:border-acid hover:text-acid transition-colors relative"
+        >
+          <AnimatePresence mode="wait">
+            {isPlaying ? (
               <motion.div
-                key={i}
-                className="w-[2px] bg-acid"
-                animate={isPlaying ? { height: [2, 8, 3, 6, 2] } : { height: 2 }}
-                transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1 }}
-              />
-            ))}
+                key="pause"
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 90 }}
+              >
+                <Pause size={18} fill="currentColor" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="play"
+                initial={{ opacity: 0, rotate: 90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: -90 }}
+              >
+                <Play size={18} fill="currentColor" className="ml-0.5" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          {isPlaying && (
+            <motion.div 
+              className="absolute -inset-1 rounded-full border border-acid/30"
+              animate={{ scale: [1, 1.3], opacity: [0.3, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+          )}
+        </motion.button>
+
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2">
+            <span className="ui-label text-[10px] text-paper/80 tracking-[0.2em] uppercase">Now Playing</span>
+            <div className="flex gap-[2px] h-2 items-end">
+              {[...Array(4)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="w-[2px] bg-acid"
+                  animate={isPlaying ? { height: [2, 8, 3, 6, 2] } : { height: 2 }}
+                  transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1 }}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="mono text-[12px] text-paper font-bold uppercase tracking-tight">One Dance</span>
+            <span className="mono text-[9px] text-paper/40">— DRAKE</span>
           </div>
         </div>
-        <div className="flex items-baseline gap-2">
-          <span className="mono text-[12px] text-paper font-bold uppercase tracking-tight">One Dance</span>
-          <span className="mono text-[9px] text-paper/40">— DRAKE</span>
-        </div>
-      </div>
 
-      {/* Technical Data Overlay */}
-      <div className="hidden lg:flex flex-col gap-0.5 ml-6 pl-6 border-l border-paper/10 opacity-20">
-        <span className="mono text-[8px]">FREQ_LOCK: 44.1kHz</span>
-        <span className="mono text-[8px]">BITRATE: 320kbps</span>
+        <div className="hidden lg:flex flex-col gap-0.5 ml-6 pl-6 border-l border-paper/10 opacity-20">
+          <span className="mono text-[8px]">FREQ_LOCK: 44.1kHz</span>
+          <span className="mono text-[8px]">BITRATE: 320kbps</span>
+        </div>
       </div>
     </div>
   );
@@ -468,7 +467,6 @@ function MusicPlayer() {
 function HeroBackground({ reduced }: { reduced: boolean | null }) {
   return (
     <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-20">
-      {/* 40px Grid */}
       <div 
         className="absolute inset-0" 
         style={{
@@ -477,26 +475,22 @@ function HeroBackground({ reduced }: { reduced: boolean | null }) {
         }} 
       />
 
-      {/* Large background text */}
       <div className="absolute left-[4vw] top-[50vh] brutal-heading text-[15vw] text-paper/[0.02] leading-none select-none">
         INDEX_00
       </div>
 
-      {/* Grid Markers */}
       <div className="absolute top-0 left-0 w-full h-full">
          <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-paper/20 rounded-full" />
          <div className="absolute top-3/4 left-2/3 w-1 h-1 bg-paper/20 rounded-full" />
          <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-acid/20 rounded-full" />
       </div>
 
-      {/* Scanning Line */}
       <motion.div 
         className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-paper/20 to-transparent z-10"
         animate={{ top: ['0%', '100%', '0%'] }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       />
       
-      {/* Corner Metadata */}
       <div className="absolute top-8 left-8 w-16 h-16 border-t border-l border-paper/10" />
       <div className="absolute bottom-8 right-8 w-16 h-16 border-b border-r border-paper/10" />
     </div>
