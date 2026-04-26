@@ -105,14 +105,17 @@ export default function Hero({ booted }: { booted: boolean }) {
       {/* Name block — receives letter layoutIds from BootScreen */}
       <div
         ref={nameRef}
-        className="relative z-10 pt-[24vw] md:pt-[10vw] px-[4vw]"
+        className="relative z-10 pt-[35vw] md:pt-[10vw] px-[6vw] md:px-[4vw]"
       >
         {/* Name: Added pointer-events-none so it doesn't block the photo hover */}
         <div className="flex flex-col relative z-20 pointer-events-none">
           {/* SHIVAM — bleeds off the right intentionally */}
           <h1
             className="brutal-heading whitespace-nowrap text-paper"
-            style={{ fontSize: "20vw", lineHeight: 0.82 }}
+            style={{ 
+              fontSize: "clamp(4.5rem, 17vw, 20vw)", 
+              lineHeight: 0.85 
+            }}
           >
             {LETTERS.map((letter, i) => (
               <motion.span
@@ -136,10 +139,10 @@ export default function Hero({ booted }: { booted: boolean }) {
           <h2
             className="brutal-heading whitespace-nowrap text-acid"
             style={{
-              fontSize: "20vw",
-              lineHeight: 0.82,
+              fontSize: "clamp(4.5rem, 17vw, 20vw)",
+              lineHeight: 0.85,
               paddingLeft: "8vw",
-              marginTop: "-0.1em",
+              marginTop: "-0.05em",
             }}
           >
             <motion.span
@@ -155,7 +158,7 @@ export default function Hero({ booted }: { booted: boolean }) {
 
         {/* Profile Photo - Identity Activation Interaction */}
         <motion.div
-          className="absolute top-[18vh] md:top-[12vh] left-1/2 -translate-x-1/2 md:left-auto md:right-[6vw] md:translate-x-0 z-30 w-[65vw] md:w-[22vw] h-[80vw] md:h-[30vw] cursor-none group"
+          className="absolute top-[52vh] md:top-[12vh] right-[6vw] md:right-[6vw] z-30 w-[45vw] md:w-[22vw] h-[60vw] md:h-[30vw] cursor-none group"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
           whileHover={{ scale: 1.02 }}
