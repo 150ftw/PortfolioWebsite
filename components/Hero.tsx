@@ -113,7 +113,7 @@ export default function Hero({ booted }: { booted: boolean }) {
           <h1
             className="brutal-heading whitespace-nowrap text-paper"
             style={{ 
-              fontSize: "clamp(4.5rem, 17vw, 20vw)", 
+              fontSize: "clamp(3.8rem, 15vw, 20vw)", 
               lineHeight: 0.85 
             }}
           >
@@ -139,7 +139,7 @@ export default function Hero({ booted }: { booted: boolean }) {
           <h2
             className="brutal-heading whitespace-nowrap text-acid"
             style={{
-              fontSize: "clamp(4.5rem, 17vw, 20vw)",
+              fontSize: "clamp(3.8rem, 15vw, 20vw)",
               lineHeight: 0.85,
               paddingLeft: "8vw",
               marginTop: "-0.05em",
@@ -158,7 +158,7 @@ export default function Hero({ booted }: { booted: boolean }) {
 
         {/* Profile Photo - Identity Activation Interaction */}
         <motion.div
-          className="absolute top-[52vh] md:top-[12vh] right-[6vw] md:right-[6vw] z-30 w-[45vw] md:w-[22vw] h-[60vw] md:h-[30vw] cursor-none group"
+          className="absolute top-[78vh] md:top-[12vh] right-[6vw] md:right-[6vw] z-30 w-[45vw] md:w-[22vw] h-[60vw] md:h-[30vw] cursor-none group"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
           whileHover={{ scale: 1.02 }}
@@ -296,12 +296,12 @@ export default function Hero({ booted }: { booted: boolean }) {
 
       {/* Mobile bio — shown below the name block */}
       <motion.p
-        className="relative z-10 mx-[4vw] mt-8 max-w-sm editorial text-base italic leading-relaxed text-paper/90 md:hidden"
+        className="relative z-10 mx-[6vw] mt-16 max-w-[85vw] editorial text-[15px] italic leading-relaxed text-paper/80 md:hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
       >
-        {owner.bio}
+        {owner.aboutBio}
       </motion.p>
 
       {/* Bottom-left tiny terminal — above CTA so they don't overlap on mobile */}
