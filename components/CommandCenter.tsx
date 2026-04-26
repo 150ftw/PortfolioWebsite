@@ -196,9 +196,9 @@ export default function CommandCenter() {
       
       setShowTip(true);
       
-      // Play a subtle notification sound
-      const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
-      audio.volume = 0.15;
+      // Play a premium futuristic notification sound
+      const audio = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_730623a808.mp3");
+      audio.volume = 0.25;
       audio.play().catch(err => console.log("Audio play blocked by browser policy:", err));
       
       // Hide after 15 seconds to give them time to read
@@ -261,6 +261,10 @@ export default function CommandCenter() {
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
+      // Play interface opening sound
+      const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3");
+      audio.volume = 0.1;
+      audio.play().catch(() => {});
     } else {
       setInput("");
       setMode("command");
