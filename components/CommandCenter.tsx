@@ -114,17 +114,44 @@ export default function CommandCenter() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // CMD+K / Ctrl+K toggle
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setIsOpen(!isOpen);
+        return;
       }
-      if (e.key === "Escape") {
-        setIsOpen(false);
+
+      // If Command Center is open, handle extra shortcuts
+      if (isOpen) {
+        if (e.key === "Escape") {
+          setIsOpen(false);
+          return;
+        }
+
+        // Global Enter submission
+        if (e.key === "Enter" && !e.shiftKey) {
+          if (input.trim()) {
+            handleCommand(input);
+            return;
+          }
+        }
+
+        // Auto-focus input when starting to type
+        if (
+          inputRef.current &&
+          document.activeElement !== inputRef.current &&
+          e.key.length === 1 &&
+          !e.ctrlKey &&
+          !e.metaKey &&
+          !e.altKey
+        ) {
+          inputRef.current.focus();
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, setIsOpen]);
+  }, [isOpen, setIsOpen, input]);
 
   useEffect(() => {
     if (isOpen) {
