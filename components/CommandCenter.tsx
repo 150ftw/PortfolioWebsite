@@ -191,21 +191,24 @@ export default function CommandCenter() {
     setPlatform(isMobile ? "mobile" : ua.includes("mac") ? "mac" : "windows");
 
     const triggerTip = () => {
-      // Don't show if they've already seen this specific promo
-      if (localStorage.getItem("commandCenterPromoSeen_v1")) return;
+      // Use v2 to ensure it shows up again for testing
+      if (localStorage.getItem("commandCenterPromoSeen_v2")) return;
       
       setShowTip(true);
       
-      // Play a premium futuristic notification sound
-      const audio = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_730623a808.mp3");
-      audio.volume = 0.25;
-      audio.play().catch(err => console.log("Audio play blocked by browser policy:", err));
+      // Use a super-reliable interface chirp
+      const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+      audio.volume = 0.4;
       
-      // Hide after 15 seconds to give them time to read
+      audio.load();
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => console.log("Audio play blocked by browser policy:", err));
+      }
+      
       setTimeout(() => setShowTip(false), 15000);
     };
 
-    // Trigger 5 seconds after mount
     const timer = setTimeout(triggerTip, 5000);
     return () => clearTimeout(timer);
   }, []);
@@ -213,7 +216,7 @@ export default function CommandCenter() {
   useEffect(() => {
     if (isOpen) {
       setShowTip(false);
-      localStorage.setItem("commandCenterPromoSeen_v1", "true");
+      localStorage.setItem("commandCenterPromoSeen_v2", "true");
     }
   }, [isOpen]);
 
