@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Playfair_Display, JetBrains_Mono, DM_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -28,6 +28,10 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+export const viewport: Viewport = {
+  themeColor: "#050505",
+};
+
 export const metadata: Metadata = {
   title: "Full-Stack Developer · AI Builder · Co-Founder — Shivam Sharma",
   description:
@@ -47,7 +51,6 @@ export const metadata: Metadata = {
       { url: "/favicon-v3.svg?v=1", type: "image/svg+xml" },
     ],
   },
-  themeColor: "#050505",
 };
 
 import CommandCenter from "@/components/CommandCenter";
