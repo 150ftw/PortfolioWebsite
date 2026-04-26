@@ -155,8 +155,6 @@ export default function Hero({ booted }: { booted: boolean }) {
             </motion.span>
           </h2>
         </div>
-
-        </motion.aside>
       </div>
 
       {/* Profile Photo - Identity Activation Interaction — Moved outside container for true absolute positioning */}
