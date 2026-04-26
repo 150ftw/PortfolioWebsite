@@ -156,15 +156,17 @@ export default function Hero({ booted }: { booted: boolean }) {
           </h2>
 
           {/* NEW: Music Player — Floating underneath the name */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={booted ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 1.5, duration: 0.8 }}
-            className="pointer-events-auto mt-12 ml-[8vw] flex items-center gap-6"
-          >
-            <MusicPlayer />
-          </motion.div>
         </div>
+
+        {/* NEW: Music Player — Moved outside the pointer-events-none block */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={booted ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 1.5, duration: 0.8 }}
+          className="relative z-50 pointer-events-auto mt-12 ml-[8vw] flex items-center gap-6"
+        >
+          <MusicPlayer />
+        </motion.div>
       </div>
 
 
@@ -368,21 +370,30 @@ function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
     if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+    
+    try {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      }
+    } catch (err) {
+      console.error("Playback failed:", err);
+      setIsPlaying(false);
     }
-    setIsPlaying(!isPlaying);
   };
 
   return (
     <div className="flex items-center gap-4 group/player">
       <audio 
         ref={audioRef} 
-        src="https://p.scdn.co/mp3-preview/742217c45f4ca61286a51d2f8df4a42b93f6f9e2?cid=774b29d4f13844c495f2061947e4d83f" 
+        src="https://ia801602.us.archive.org/32/items/drake-one-dance-ft.-wizkid-kyla/Drake%20-%20One%20Dance%20%28ft.%20Wizkid%20%26%20Kyla%29.mp3" 
+        preload="auto"
+        crossOrigin="anonymous"
         onEnded={() => setIsPlaying(false)}
       />
       
