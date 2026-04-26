@@ -387,7 +387,7 @@ export default function CommandCenter() {
               ))}
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       )}
       {/* CMD+K Tip Popup */}
       <AnimatePresence>
