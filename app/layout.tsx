@@ -40,11 +40,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/monogram.svg?v=1", type: "image/svg+xml" },
+      { url: "/monogram.svg?v=2", type: "image/svg+xml" },
     ],
-    shortcut: "/monogram.svg?v=1",
+    shortcut: "/monogram.svg?v=2",
     apple: [
-      { url: "/monogram.svg?v=1", type: "image/svg+xml" },
+      { url: "/monogram.svg?v=2", type: "image/svg+xml" },
     ],
   },
   themeColor: "#050505",
