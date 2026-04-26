@@ -191,8 +191,8 @@ export default function CommandCenter() {
     setPlatform(isMobile ? "mobile" : ua.includes("mac") ? "mac" : "windows");
 
     const triggerTip = () => {
-      // Still respect if they've already opened it in this session to avoid being annoying
-      if (localStorage.getItem("commandCenterOpened")) return;
+      // Don't show if they've already seen this specific promo
+      if (localStorage.getItem("commandCenterPromoSeen_v1")) return;
       
       setShowTip(true);
       
@@ -201,19 +201,19 @@ export default function CommandCenter() {
       audio.volume = 0.15;
       audio.play().catch(err => console.log("Audio play blocked by browser policy:", err));
       
-      // Hide after exactly 5 seconds
-      setTimeout(() => setShowTip(false), 5000);
+      // Hide after 15 seconds to give them time to read
+      setTimeout(() => setShowTip(false), 15000);
     };
 
-    // Automatically trigger after 10 seconds for everyone
-    const timer = setTimeout(triggerTip, 10000);
+    // Trigger 5 seconds after mount
+    const timer = setTimeout(triggerTip, 5000);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     if (isOpen) {
       setShowTip(false);
-      localStorage.setItem("commandCenterOpened", "true");
+      localStorage.setItem("commandCenterPromoSeen_v1", "true");
     }
   }, [isOpen]);
 
@@ -475,35 +475,42 @@ export default function CommandCenter() {
       <AnimatePresence>
         {showTip && !isOpen && (
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="fixed top-8 right-8 z-[10001] px-6 py-4 bg-ink/90 border border-acid/30 backdrop-blur-md shadow-2xl flex items-center gap-6 group pointer-events-auto"
+            initial={{ opacity: 0, x: 50, scale: 0.9 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 20, scale: 0.95 }}
+            className="fixed top-24 right-4 md:top-8 md:right-8 z-[10001] px-5 py-4 bg-ink/90 border border-acid/40 backdrop-blur-md shadow-[0_0_30px_rgba(195,255,0,0.1)] flex items-center gap-5 group pointer-events-auto max-w-[90vw] md:max-w-sm"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-acid/10 flex items-center justify-center text-acid animate-pulse">
-                <Terminal size={16} />
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-sm bg-acid/10 flex items-center justify-center text-acid border border-acid/20">
+                <Terminal size={20} className="animate-pulse" />
               </div>
-              <div className="flex flex-col">
-                <span className="mono text-[10px] text-acid/60 tracking-[0.2em] uppercase mb-0.5">System_Alert</span>
-                <span className="text-sm font-medium text-paper/90 tracking-tight">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="mono text-[10px] text-acid tracking-[0.2em] uppercase font-bold">System_Protocol</span>
+                  <div className="h-[1px] w-8 bg-acid/30" />
+                </div>
+                <span className="text-[13px] font-medium text-paper tracking-tight leading-snug">
                   {platform === "mobile" ? (
-                    "Tap the terminal icon to access the AI Command Center"
+                    "Tap the terminal icon for the AI Command Center"
                   ) : (
                     <>
-                      Press <kbd className="px-2 py-0.5 rounded bg-paper/10 border border-paper/20 text-[11px] font-mono text-acid mx-1">{platform === "mac" ? "⌘" : "Ctrl"}</kbd> + <kbd className="px-2 py-0.5 rounded bg-paper/10 border border-paper/20 text-[11px] font-mono text-acid">K</kbd> to access the Command Center
+                      Execute <kbd className="px-1.5 py-0.5 rounded bg-acid text-ink font-mono text-[11px] font-bold mx-0.5">{platform === "mac" ? "⌘" : "Ctrl"}</kbd> + <kbd className="px-1.5 py-0.5 rounded bg-acid text-ink font-mono text-[11px] font-bold">K</kbd> to launch Command Center
                     </>
                   )}
                 </span>
               </div>
             </div>
             <button
-              onClick={() => setShowTip(false)}
-              className="p-1 hover:text-acid text-paper/30 transition-colors"
+              onClick={() => {
+                setShowTip(false);
+                localStorage.setItem("commandCenterPromoSeen_v1", "true");
+              }}
+              className="p-1 hover:bg-paper/10 text-paper/30 hover:text-paper transition-all rounded-full"
             >
               <X size={14} />
             </button>
-            <div className="absolute -bottom-1 left-0 h-[2px] bg-acid animate-[scan_2s_ease-in-out_infinite]" style={{ width: '100%' }} />
+            {/* Animated Scanning Line */}
+            <div className="absolute top-0 left-0 w-full h-[1px] bg-acid/50 shadow-[0_0_10px_#C3FF00] animate-[scan_3s_linear_infinite]" />
           </motion.div>
         )}
       </AnimatePresence>
