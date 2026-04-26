@@ -52,11 +52,8 @@ export default function CommandCenter() {
         audio.volume = 0.15;
         audio.play().catch(err => console.log("Audio play blocked:", err));
         
-        // Auto-hide after some time (12s mobile, 5s laptop)
-        const ua = typeof window !== "undefined" ? window.navigator.userAgent.toLowerCase() : "";
-        const isMobile = ua.includes("iphone") || ua.includes("android") || ua.includes("ipad");
-        const hideDelay = isMobile ? 12000 : 5000;
-        setTimeout(() => setShowTip(false), hideDelay);
+        // Auto-hide after 5 seconds for all devices
+        setTimeout(() => setShowTip(false), 5000);
 
         // Mark as shown for this session
         sessionStorage.setItem("commandTipShown", "true");
