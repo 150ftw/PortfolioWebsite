@@ -43,8 +43,11 @@ export const metadata: Metadata = {
       { url: "/favicon.svg?v=7", type: "image/svg+xml" },
     ],
     shortcut: "/favicon.svg?v=7",
-    apple: "/favicon.svg?v=7",
+    apple: [
+      { url: "/favicon.svg?v=7", type: "image/svg+xml" },
+    ],
   },
+  themeColor: "#050505",
 };
 
 import CommandCenter from "@/components/CommandCenter";
