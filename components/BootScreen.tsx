@@ -65,7 +65,7 @@ export default function BootScreen({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center pointer-events-none"
       initial={{ backgroundColor: "#050505" }}
       animate={{
         backgroundColor:
