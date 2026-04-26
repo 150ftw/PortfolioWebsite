@@ -206,92 +206,94 @@ export default function Hero({ booted }: { booted: boolean }) {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
           whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.8, ease: "circOut" }}
+          transition={{ 
+            delay: 0.8, 
+            duration: 1.2, 
+            ease: [0.22, 1, 0.36, 1],
+            scale: { duration: 0.4, ease: "easeOut" }
+          }}
+          onMouseEnter={() => spotlightRadius.set(220)}
+          onMouseLeave={() => {
+            spotlightRadius.set(0);
+            const target = document.getElementById('hero-portrait-tilt');
+            if (target) {
+              target.style.setProperty('--mx', '0px');
+              target.style.setProperty('--my', '0px');
+            }
+          }}
+          onMouseMove={(e: React.MouseEvent) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            mouseX.set(x);
+            mouseY.set(y);
+            
+            // Also keep the parallax tilt
+            const px = (e.clientX - rect.left) / rect.width - 0.5;
+            const py = (e.clientY - rect.top) / rect.height - 0.5;
+            const target = e.currentTarget as HTMLElement;
+            target.style.setProperty('--mx', `${px * 10}px`);
+            target.style.setProperty('--my', `${py * 10}px`);
+          }}
+          id="hero-portrait-tilt"
+          style={{
+            transform: 'translate(var(--mx, 0), var(--my, 0))',
+            transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
+          } as any}
         >
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-        whileHover={{ scale: 1.02 }}
-        transition={{ 
-          delay: 0.8, 
-          duration: 1.2, 
-          ease: [0.22, 1, 0.36, 1],
-          scale: { duration: 0.4, ease: "easeOut" }
-        }}
-        onMouseEnter={() => spotlightRadius.set(220)}
-        onMouseLeave={() => {
-          spotlightRadius.set(0);
-          const target = document.getElementById('hero-portrait-tilt');
-          if (target) {
-            target.style.setProperty('--mx', '0px');
-            target.style.setProperty('--my', '0px');
-          }
-        }}
-        onMouseMove={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          const x = ((e.clientX - rect.left) / rect.width) * 100;
-          const y = ((e.clientY - rect.top) / rect.height) * 100;
-          mouseX.set(x);
-          mouseY.set(y);
+          {/* Spotlight background glow follows mouse */}
+          <motion.div 
+            className="absolute -inset-12 bg-cyan-500/10 blur-[80px] rounded-full pointer-events-none"
+            style={{ WebkitMaskImage: maskImage, maskImage } as any}
+          />
           
-          // Also keep the parallax tilt
-          const px = (e.clientX - rect.left) / rect.width - 0.5;
-          const py = (e.clientY - rect.top) / rect.height - 0.5;
-          const target = e.currentTarget as HTMLElement;
-          target.style.setProperty('--mx', `${px * 10}px`);
-          target.style.setProperty('--my', `${py * 10}px`);
-        }}
-        id="hero-portrait-tilt"
-        style={{
-          transform: 'translate(var(--mx, 0), var(--my, 0))',
-          transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
-        } as any}
-      >
-        {/* Spotlight background glow follows mouse */}
-        <motion.div 
-          className="absolute -inset-12 bg-cyan-500/10 blur-[80px] rounded-full pointer-events-none"
-          style={{ WebkitMaskImage: maskImage, maskImage } as any}
-        />
-        
-        <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-paper/10 bg-paper/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-          {/* Image 1: Default Clean (Always Visible) */}
-          <img 
-            src="/shivam-base.png" 
-            alt="Shivam Sharma"
-            className="absolute inset-0 w-full h-full object-cover object-[51%_20%] scale-[1.12] transition-[filter] duration-500 group-hover:brightness-[0.85]"
-          />
+          <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-paper/10 bg-paper/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+            {/* Image 1: Default Clean (Always Visible) */}
+            <img 
+              src="/shivam-base.png" 
+              alt="Shivam Sharma"
+              className="absolute inset-0 w-full h-full object-cover object-[51%_20%] scale-[1.12] transition-[filter] duration-500 group-hover:brightness-[0.85]"
+            />
 
-          {/* Image 2: Cyber Portrait (Revealed by Spotlight Mask) */}
-          <motion.img 
-            src="/shivam-cyber.png" 
-            alt="Shivam Sharma Cyber"
-            className="absolute inset-0 w-full h-full object-cover object-[56%_22%] z-20 pointer-events-none scale-[1.0]"
-            style={{ WebkitMaskImage: maskImage, maskImage } as any}
-          />
+            {/* Image 2: Cyber Portrait (Revealed by Spotlight Mask) */}
+            <motion.img 
+              src="/shivam-cyber.png" 
+              alt="Shivam Sharma Cyber"
+              className="absolute inset-0 w-full h-full object-cover object-[56%_22%] z-20 pointer-events-none scale-[1.0]"
+              style={{ WebkitMaskImage: maskImage, maskImage } as any}
+            />
 
-          {/* Glitch Flicker Overlay — subtle scan inside spotlight */}
-          <motion.div 
-            className="absolute inset-0 pointer-events-none group-hover:animate-[glitch_0.25s_ease-in-out_infinite] bg-cyan-500/5 mix-blend-overlay z-30"
-            style={{ WebkitMaskImage: maskImage, maskImage } as any}
-          />
+            {/* Glitch Flicker Overlay — subtle scan inside spotlight */}
+            <motion.div 
+              className="absolute inset-0 pointer-events-none group-hover:animate-[glitch_0.25s_ease-in-out_infinite] bg-cyan-500/5 mix-blend-overlay z-30"
+              style={{ WebkitMaskImage: maskImage, maskImage } as any}
+            />
 
-          {/* Scanning line sweep inside the spotlight */}
-          <motion.div 
-            className="absolute top-0 left-0 right-0 h-[1px] bg-cyan-400/40 group-hover:animate-[scan-once_1.5s_infinite] z-40" 
-            style={{ WebkitMaskImage: maskImage, maskImage } as any}
-          />
+            {/* Scanning line sweep inside the spotlight */}
+            <motion.div 
+              className="absolute top-0 left-0 right-0 h-[1px] bg-cyan-400/40 group-hover:animate-[scan-once_1.5s_infinite] z-40" 
+              style={{ WebkitMaskImage: maskImage, maskImage } as any}
+            />
 
-          {/* Verified Badge / Data — Hidden on mobile for cleaner look */}
-          <div className="absolute bottom-6 left-6 hidden md:flex flex-col gap-1 z-50 pointer-events-none">
-              <span className="ui-label text-[8px] text-white/40 tracking-[0.4em] uppercase">Status</span>
-              <div className="flex items-center gap-2">
-                <div className="h-1.5 w-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
-                <span className="ui-label text-[10px] text-white tracking-[0.2em] group-hover:text-cyan-400 transition-colors">IDENTITY_VERIFIED</span>
-              </div>
+            {/* Verified Badge / Data — Hidden on mobile for cleaner look */}
+            <div className="absolute bottom-6 left-6 hidden md:flex flex-col gap-1 z-50 pointer-events-none">
+                <span className="ui-label text-[8px] text-white/40 tracking-[0.4em] uppercase">Status</span>
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+                  <span className="ui-label text-[10px] text-white tracking-[0.2em] group-hover:text-cyan-400 transition-colors">IDENTITY_VERIFIED</span>
+                </div>
+            </div>
           </div>
-        </div>
-        
-            <span className="mono text-[8px]">BIO_SYNC: 98.4%</span>
-        </div>
+          
+          {/* Luxury Spacing / Under-photo data — Hidden on mobile for cleaner look */}
+          <div className="mt-6 hidden md:flex items-center justify-between px-2 opacity-20 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none">
+              <div className="flex items-center gap-3">
+                <span className="mono text-[8px]">SHVM_UID: 150_FTW</span>
+                <div className="h-px w-8 bg-paper/50" />
+              </div>
+              <span className="mono text-[8px]">BIO_SYNC: 98.4%</span>
+          </div>
+        </motion.div>
         
         {/* Desktop Bio — Moved under the photo for perfect vertical balance */}
         <motion.div
