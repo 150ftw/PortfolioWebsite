@@ -158,21 +158,62 @@ export default function Hero({ booted }: { booted: boolean }) {
           {/* NEW: Music Player — Floating underneath the name */}
         </div>
 
-        {/* NEW: Music Player — Moved outside the pointer-events-none block */}
+        {/* NEW: Music Player — Floating underneath the name */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={booted ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 1.5, duration: 0.8 }}
-          className="relative z-50 pointer-events-auto mt-12 ml-[8vw] flex items-center gap-6"
+          className="relative z-50 pointer-events-auto mt-12 flex items-center gap-6"
         >
           <MusicPlayer />
         </motion.div>
+
+        {/* Desktop Bio — Now part of the relative flow to prevent overlap */}
+        <motion.div
+          className="mt-12 max-w-[350px] hidden md:block"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.6, duration: 0.8 }}
+        >
+          <p className="editorial text-[1.1rem] italic leading-relaxed text-paper/80">
+            {owner.bio}
+          </p>
+        </motion.div>
+
+        {/* Rule + role line — Now following the flow */}
+        <div className="relative mt-12 z-10 max-w-[85%] md:max-w-[55%]">
+          <motion.div
+            className="h-px w-[60%] bg-paper/70"
+            initial={{ scaleX: 0, originX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.9, duration: 0.7 }}
+          />
+          <motion.p
+            className="ui-label mt-4 text-paper/60 flex flex-wrap items-center gap-x-6 gap-y-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.6 }}
+          >
+            <span>{owner.roleLine}</span>
+            
+            <a 
+              href={owner.resume} 
+              target="_blank" 
+              rel="noreferrer"
+              data-cursor
+              data-cursor-label="RESUME"
+              className="hidden md:flex items-center gap-2 group/cv text-paper hover:text-acid transition-colors border-l border-paper/20 pl-6"
+            >
+              <span className="underline underline-offset-4 decoration-paper/30 group-hover/cv:decoration-acid">DOWNLOAD CV</span>
+              <ArrowUpRight size={12} className="transition-transform group-hover/cv:-translate-y-0.5 group-hover/cv:translate-x-0.5" />
+            </a>
+          </motion.p>
+        </div>
       </div>
 
-
-      {/* Profile Photo - Identity Activation Interaction — Locked to Bottom-Right on Mobile */}
+      {/* Profile Photo - Identity Activation Interaction — Fixed to Right Column */}
       <motion.div
-        className="absolute bottom-[6vh] right-[4vw] md:top-[12vh] md:bottom-auto md:right-[6vw] z-30 w-[32vw] md:w-[22vw] h-[45vw] md:h-[30vw] cursor-none group"
+        className="absolute top-[15vh] right-[4vw] md:right-[6vw] z-30 w-[32vw] md:w-[22vw] h-[45vw] md:h-[30vw] cursor-none group"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
         whileHover={{ scale: 1.02 }}
@@ -265,61 +306,19 @@ export default function Hero({ booted }: { booted: boolean }) {
         </div>
       </motion.div>
 
-      {/* Rule + role line — bottom-left */}
-      <div className="relative md:absolute left-[6vw] md:left-[4vw] mt-12 md:bottom-[20vh] z-10 max-w-[85%] md:max-w-[55%]">
-        <motion.div
-          className="h-px w-[60%] bg-paper/70"
-          initial={{ scaleX: 0, originX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: 0.9, duration: 0.7 }}
-        />
-        <motion.p
-          className="ui-label mt-4 text-paper/60 flex items-center gap-6"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.6 }}
-        >
-          <span>{owner.roleLine}</span>
-          
-          <a 
-            href={owner.resume} 
-            target="_blank" 
-            rel="noreferrer"
-            data-cursor
-            data-cursor-label="RESUME"
-            className="hidden md:flex items-center gap-2 group/cv text-paper hover:text-acid transition-colors border-l border-paper/20 pl-6"
-          >
-            <span className="underline underline-offset-4 decoration-paper/30 group-hover/cv:decoration-acid">DOWNLOAD CV</span>
-            <ArrowUpRight size={12} className="transition-transform group-hover/cv:-translate-y-0.5 group-hover/cv:translate-x-0.5" />
-          </a>
-        </motion.p>
-      </div>
-
-      {/* Desktop Bio — Moved to the left to avoid photo HUD collision on laptops */}
-      <motion.aside
-        className="absolute left-[4vw] bottom-[28vh] z-10 hidden max-w-[350px] md:block"
-        initial={{ opacity: 0, x: -24 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.2, duration: 0.7 }}
-      >
-        <p className="editorial text-[1.1rem] italic leading-relaxed text-paper/80">
-          {owner.bio}
-        </p>
-      </motion.aside>
-
-      {/* Mobile bio — shown below the name block */}
+      {/* Mobile bio — shown below the name block for small screens */}
       <motion.p
         className="relative z-10 mx-[6vw] mt-8 max-w-[55vw] editorial text-[14px] italic leading-relaxed text-paper/80 md:hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
       >
-        {owner.aboutBio}
+        {owner.bio}
       </motion.p>
 
       {/* Bottom-left tiny terminal — anchored for HUD symmetry */}
       <motion.div
-        className="relative md:absolute left-[6vw] mt-12 md:bottom-6 z-10 mono text-[10px] md:text-[11px] text-paper/60 flex flex-col"
+        className="absolute left-[6vw] bottom-[6vh] md:bottom-6 z-10 mono text-[10px] md:text-[11px] text-paper/60 flex flex-col"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.3, duration: 0.6 }}
