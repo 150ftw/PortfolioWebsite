@@ -39,6 +39,8 @@ export async function POST(req: Request) {
       
       CONTEXT ABOUT SHIVAM:
       - Full Name: ${owner.name}
+      - Birthday: ${owner.dob}
+      - Current Age: ${owner.age} years old
       - Roles: ${owner.roles.join(", ")}
       - Bio: ${owner.bio}
       - Experience:
