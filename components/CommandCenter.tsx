@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Terminal, MessageSquare, X, ChevronRight, CornerDownLeft } from "lucide-react";
+import { Search, Terminal, MessageSquare, X, ChevronRight, CornerDownLeft, Mic, MicOff } from "lucide-react";
 import { navSections } from "@/lib/data";
 
 type Message = {
@@ -20,11 +20,57 @@ export default function CommandCenter() {
     { role: "assistant", content: "Eko initialized. How can I help you today?" }
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-
+  const recognitionRef = useRef<any>(null);
   const [showTip, setShowTip] = useState(false);
   const [platform, setPlatform] = useState<"mac" | "windows" | "mobile">("windows");
+
+  useEffect(() => {
+    // Initialize Speech Recognition
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = Array.from(event.results)
+          .map((result: any) => result[0])
+          .map((result: any) => result.transcript)
+          .join("");
+        setInput(transcript);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onerror = (event: any) => {
+        console.error("Speech Recognition Error:", event.error);
+        setIsListening(false);
+      };
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    } else {
+      if (recognitionRef.current) {
+        recognitionRef.current.start();
+        setIsListening(true);
+        // Play small start sound
+        const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3");
+        audio.volume = 0.1;
+        audio.play().catch(() => {});
+      } else {
+        alert("Speech recognition is not supported in this browser.");
+      }
+    }
+  };
 
   useEffect(() => {
     const ua = typeof window !== "undefined" ? window.navigator.userAgent.toLowerCase() : "";
@@ -360,8 +406,19 @@ export default function CommandCenter() {
                   placeholder={mode === 'command' ? "Type a command (goto, chat, help)..." : "Ask Eko anything..."}
                   className="w-full bg-paper/5 border border-paper/10 pl-10 pr-12 py-3 mono text-[16px] md:text-[13px] text-paper outline-none focus:border-acid/40 transition-colors"
                 />
-                <div className="absolute right-3 flex items-center gap-2">
-                  <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-paper/5 border border-paper/10 text-[9px] mono text-paper/40">
+                <div className="absolute right-3 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={toggleListening}
+                    className={`p-2 rounded-full transition-all duration-300 ${
+                      isListening 
+                        ? 'bg-acid text-ink animate-pulse shadow-[0_0_15px_rgba(195,255,0,0.5)]' 
+                        : 'text-paper/40 hover:text-acid hover:bg-paper/5'
+                    }`}
+                  >
+                    <Mic size={16} />
+                  </button>
+                  <div className="hidden md:flex items-center gap-1 px-2 py-1 rounded-sm bg-paper/5 border border-paper/10 text-[9px] mono text-paper/40">
                     <CornerDownLeft size={8} />
                     <span>ENTER</span>
                   </div>
