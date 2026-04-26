@@ -28,42 +28,35 @@ export default function CommandCenter() {
 
   useEffect(() => {
     const ua = typeof window !== "undefined" ? window.navigator.userAgent.toLowerCase() : "";
-    if (ua.includes("iphone") || ua.includes("android") || ua.includes("ipad")) {
-      setPlatform("mobile");
-    } else if (ua.includes("mac")) {
-      setPlatform("mac");
-    } else {
-      setPlatform("windows");
-    }
+    const isMobile = ua.includes("iphone") || ua.includes("android") || ua.includes("ipad");
+    setPlatform(isMobile ? "mobile" : ua.includes("mac") ? "mac" : "windows");
 
-    const handleFirstClick = () => {
-      // Check if it has already been shown in THIS session (tab)
-      const hasShownThisSession = sessionStorage.getItem("commandTipShown");
-      if (hasShownThisSession) return;
-
-      // Also respect the global 'opened' state from localStorage
-      const hasOpened = localStorage.getItem("commandCenterOpened");
-      if (hasOpened) return;
-
-      setTimeout(() => {
-        console.log("CMD+K Tip Triggered (Fresh Session)");
-        setShowTip(true);
-        const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
-        audio.volume = 0.15;
-        audio.play().catch(err => console.log("Audio play blocked:", err));
-        
-        // Auto-hide after 5 seconds for all devices
-        setTimeout(() => setShowTip(false), 5000);
-
-        // Mark as shown for this session
-        sessionStorage.setItem("commandTipShown", "true");
-      }, 6000);
-
-      window.removeEventListener("click", handleFirstClick);
+    const triggerTip = () => {
+      if (sessionStorage.getItem("commandTipShown") || localStorage.getItem("commandCenterOpened")) return;
+      
+      console.log("Triggering Command Tip...");
+      setShowTip(true);
+      const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+      audio.volume = 0.15;
+      audio.play().catch(err => console.log("Audio play blocked:", err));
+      
+      sessionStorage.setItem("commandTipShown", "true");
+      setTimeout(() => setShowTip(false), 5000);
     };
 
-    window.addEventListener("click", handleFirstClick);
-    return () => window.removeEventListener("click", handleFirstClick);
+    if (isMobile) {
+      // Auto-trigger on mobile/iPad after 12s
+      const timer = setTimeout(triggerTip, 12000);
+      return () => clearTimeout(timer);
+    } else {
+      // Desktop: wait for first click, then trigger after 6s
+      const handleFirstClick = () => {
+        setTimeout(triggerTip, 6000);
+        window.removeEventListener("click", handleFirstClick);
+      };
+      window.addEventListener("click", handleFirstClick);
+      return () => window.removeEventListener("click", handleFirstClick);
+    }
   }, []);
 
   useEffect(() => {
