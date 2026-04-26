@@ -168,20 +168,8 @@ export default function Hero({ booted }: { booted: boolean }) {
           <MusicPlayer />
         </motion.div>
 
-        {/* Desktop Bio — Now part of the relative flow to prevent overlap */}
-        <motion.div
-          className="mt-12 max-w-[350px] hidden md:block"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1.6, duration: 0.8 }}
-        >
-          <p className="editorial text-[1.1rem] italic leading-relaxed text-paper/80">
-            {owner.bio}
-          </p>
-        </motion.div>
-
-        {/* Rule + role line — Now following the flow */}
-        <div className="relative mt-12 z-10 max-w-[85%] md:max-w-[55%]">
+        {/* Rule + role line — Clean stack */}
+        <div className="relative mt-20 z-10 max-w-[85%] md:max-w-[55%]">
           <motion.div
             className="h-px w-[60%] bg-paper/70"
             initial={{ scaleX: 0, originX: 0 }}
@@ -211,9 +199,15 @@ export default function Hero({ booted }: { booted: boolean }) {
         </div>
       </div>
 
-      {/* Profile Photo - Identity Activation Interaction — Fixed to Right Column */}
-      <motion.div
-        className="absolute top-[15vh] right-[4vw] md:right-[6vw] z-30 w-[32vw] md:w-[22vw] h-[45vw] md:h-[30vw] cursor-none group"
+      {/* Right Column: Photo + Bio — Locked to Right side for balance */}
+      <div className="absolute top-[12vh] right-[4vw] md:right-[6vw] z-30 flex flex-col items-end gap-12 w-[32vw] md:w-[22vw]">
+        <motion.div
+          className="relative w-full h-[45vw] md:h-[30vw] cursor-none group"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.8, ease: "circOut" }}
+        >
         initial={{ opacity: 0, scale: 0.95 }}
         animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
         whileHover={{ scale: 1.02 }}
@@ -296,15 +290,21 @@ export default function Hero({ booted }: { booted: boolean }) {
           </div>
         </div>
         
-        {/* Luxury Spacing / Under-photo data — Hidden on mobile for cleaner look */}
-        <div className="mt-6 hidden md:flex items-center justify-between px-2 opacity-20 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none">
-            <div className="flex items-center gap-3">
-              <span className="mono text-[8px]">SHVM_UID: 150_FTW</span>
-              <div className="h-px w-8 bg-paper/50" />
-            </div>
             <span className="mono text-[8px]">BIO_SYNC: 98.4%</span>
         </div>
-      </motion.div>
+        
+        {/* Desktop Bio — Moved under the photo for perfect vertical balance */}
+        <motion.div
+          className="hidden md:block w-full"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.6, duration: 0.8 }}
+        >
+          <p className="editorial text-[1rem] lg:text-[1.1rem] italic leading-relaxed text-paper/60 text-right">
+            {owner.bio}
+          </p>
+        </motion.div>
+      </div>
 
       {/* Mobile bio — shown below the name block for small screens */}
       <motion.p
