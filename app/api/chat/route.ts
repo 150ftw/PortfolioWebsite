@@ -1,6 +1,6 @@
 import { owner, projects } from "@/lib/data";
 
-const NVAPI_KEY = "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";
+const NVAPI_KEY = process.env.NVAPI_KEY;
 
 export async function GET() {
   return new Response("Chat API is active", { status: 200 });
@@ -11,10 +11,11 @@ export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
     
-    let weatherData = "Unavailable";
+    // 1. Weather Fetch with very short timeout
+    let weatherData = "Currently unavailable";
     try {
       const weatherRes = await fetch("https://api.open-meteo.com/v1/forecast?latitude=28.4595&longitude=77.0266&current_weather=true", { 
-        signal: AbortSignal.timeout(3000) 
+        signal: AbortSignal.timeout(2000) 
       });
       if (weatherRes.ok) {
         const data = await weatherRes.json();
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
         weatherData = `${current.temperature}°C, Wind Speed: ${current.windspeed} km/h`;
       }
     } catch (e) {
-      console.error("Weather fetch failed:", e);
+      console.log("Weather fetch skipped due to timeout/error.");
     }
 
     const systemPrompt = `
@@ -30,106 +31,116 @@ export async function POST(req: Request) {
       Your personality is helpful, professional, and slightly technical, matching the "System Core" aesthetic of the site.
       
       CURRENT CONTEXT:
-      - Date: ${new Date().toLocaleDateString()}
-      - Time: ${new Date().toLocaleTimeString()}
-      - Day: ${new Date().toLocaleDateString('en-US', { weekday: 'long' })}
+      - Today's Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      - Today's Day: ${new Date().toLocaleDateString('en-US', { weekday: 'long' })}
+      - Current Time: ${new Date().toLocaleTimeString()}
       - Location: Shivam is based in Gurugram, India (IST).
       - Current Weather in Gurugram: ${weatherData}
       
       CONTEXT ABOUT SHIVAM:
       - Full Name: ${owner.name}
-      - Age: ${owner.age} (DOB: ${owner.dob})
       - Roles: ${owner.roles.join(", ")}
       - Bio: ${owner.bio}
-      - Detailed About: ${owner.aboutBio}
+      - Experience:
+      ${(owner as any).experience.map((exp: any) => `- ${exp.role} at ${exp.company} (${exp.period}): ${exp.highlights.join(" ")}`).join("\n")}
+      - Detailed Bio: ${owner.aboutBio}
       
       CONTACT INFO:
       - Email: ${owner.email}
-      - Phone: ${owner.phone}
-      - Location: ${owner.location}
-      - GitHub: ${owner.github}
       - LinkedIn: ${owner.linkedin}
-      - Instagram: ${owner.instagram}
-      - Discord: ${owner.discord}
+      - GitHub: ${owner.github}
       
-      SKILLS & TECH STACK:
-      - Core: Next.js, React, TypeScript, Tailwind, Framer Motion.
-      - Backend: Node.js, Express, MongoDB, PostgreSQL.
-      - Web3: Solidity, Ethers.js, Hardhat.
-      - AI: LangChain, RAG Pipelines, OpenAI, Vector DBs (Pinecone).
-      - DevOps: Docker, AWS, GitHub Actions, Vercel.
+      PROJECTS:
+      ${projects.map(p => `- ${p.name}: ${p.tagline}. Stack: ${p.stack.join(", ")}`).join("\n")}
       
-      PROJECT SUMMARY:
-      ${projects.map(p => `- ${p.name}: ${p.tagline}. Built with ${p.stack.join(", ")}.`).join("\n")}
+      SKILLS: Next.js, React, TypeScript, AI/LLMs, Web3, Node.js.
       
       GUIDELINES:
-      - You can answer questions about the weather, time, and date using the context provided above.
-      - NEVER guess or hallucinate weather data. Only report the "Current Weather" value provided in the CURRENT CONTEXT.
-      - You are the official assistant for ${owner.name}. Be helpful and professional.
-      - Keep responses concise (1-3 sentences).
+      - Be concise but high-information.
+      - FORMATTING: Use PLAIN TEXT only. Do NOT use markdown symbols like asterisks (*) or double asterisks (**). Use simple dashes (-) for lists and plain text for emphasis. Use DOUBLE NEWLINES (\n\n) between distinct list items to ensure they don't look cluttered.
+      - You have full access to date/time/day info. Calculate relative dates (like tomorrow) accurately based on "Today's Day" and "Today's Date".
     `;
 
-    const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${NVAPI_KEY}`
-      },
-      body: JSON.stringify({
-        model: "meta/llama-3.1-8b-instruct",
-        messages: [
-          { role: "system", content: systemPrompt },
-          ...messages.map((m: any) => ({
-            role: m.role === 'assistant' ? 'assistant' : 'user',
-            content: m.content
-          }))
-        ],
-        temperature: 0.5,
-        max_tokens: 500,
-        stream: true
-      })
-    });
+    // 2. Main AI Fetch with longer timeout and 70B model
+    let response;
+    try {
+      response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${NVAPI_KEY}`
+        },
+        body: JSON.stringify({
+          model: "meta/llama-3.1-70b-instruct",
+          messages: [
+            { role: "system", content: systemPrompt },
+            ...messages.map((m: any) => ({
+              role: m.role === 'assistant' ? 'assistant' : 'user',
+              content: m.content
+            }))
+          ],
+          temperature: 0.6,
+          max_tokens: 1000,
+          stream: true
+        }),
+        signal: AbortSignal.timeout(40000)
+      });
+    } catch (fetchError: any) {
+      console.error("NVIDIA Fetch Failed:", fetchError);
+      return new Response(`0:${JSON.stringify("Connection high-latency. Retrying link...")}\n`, {
+        headers: { "Content-Type": "text/plain; charset=utf-8" }
+      });
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error("NVIDIA API Error:", errorText);
-      return new Response(JSON.stringify({ error: "API Error", details: errorText }), { status: response.status });
+      return new Response(`0:${JSON.stringify("System core is currently re-calibrating. Stand by.")}\n`, {
+        headers: { "Content-Type": "text/plain; charset=utf-8" }
+      });
     }
 
-    // Return the stream directly. 
-    // Note: OpenAI stream format is 'data: {...}'
-    // Our custom frontend logic in CommandCenter.tsx expects '0:"..."' (Vercel DataStream format)
-    // So we need a small transform stream to convert OpenAI chunks to Vercel chunks
-    
     const stream = new ReadableStream({
       async start(controller) {
         const reader = response.body?.getReader();
         const decoder = new TextDecoder();
         if (!reader) return;
 
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
+        let buffer = ""; // Buffer for partial lines
 
-          const chunk = decoder.decode(value);
-          // console.log("RAW CHUNK:", chunk); // Uncomment for deep debugging
-          const lines = chunk.split('\n');
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const dataStr = line.substring(6).trim();
-              if (dataStr === '[DONE]') continue;
-              try {
-                const data = JSON.parse(dataStr);
-                const text = data.choices[0]?.delta?.content || "";
-                if (text) {
-                  // Format as Vercel DataStream chunk: 0:"text"\n
-                  controller.enqueue(new TextEncoder().encode(`0:${JSON.stringify(text)}\n`));
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            
+            const lines = buffer.split('\n');
+            // Keep the last partial line in the buffer
+            buffer = lines.pop() || "";
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed || trimmed === 'data: [DONE]') continue;
+              
+              if (trimmed.startsWith('data: ')) {
+                try {
+                  const json = JSON.parse(trimmed.substring(6));
+                  const text = json.choices[0]?.delta?.content || "";
+                  if (text) {
+                    controller.enqueue(new TextEncoder().encode(`0:${JSON.stringify(text)}\n`));
+                  }
+                } catch (e) {
+                  // Partial JSON, though buffer should handle this
                 }
-              } catch (e) {}
+              }
             }
           }
+        } catch (e) {
+          console.error("Stream interrupted:", e);
+        } finally {
+          controller.close();
         }
-        controller.close();
       }
     });
 
@@ -138,7 +149,9 @@ export async function POST(req: Request) {
     });
 
   } catch (error: any) {
-    console.error("Chat API Route Error:", error);
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    console.error("Chat API Critical Error:", error);
+    return new Response(`0:${JSON.stringify("Neural link failure. Please refresh.")}\n`, {
+      headers: { "Content-Type": "text/plain; charset=utf-8" }
+    });
   }
 }

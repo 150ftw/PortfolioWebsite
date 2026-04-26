@@ -28,6 +28,32 @@ export const owner = {
   bio: "I build AI-powered products at the intersection of finance and technology. Co-founder of EcoInsight.AI — an AI-driven stock analytics platform for retail investors. I work across the full stack with deep focus on Web3/Solidity, RAG pipelines, Docker, and AWS.",
   aboutBio:
     "Co-founder, builder, and product-minded engineer based out of Gurugram. My work sits at the seam where finance meets machine intelligence — RAG pipelines that reason over market data, retrieval systems that turn raw filings into decisions, and interfaces that make it all feel inevitable.",
+  experience: [
+    {
+      company: "Zidio Development",
+      role: "Java Full Stack Intern",
+      period: "Jun 2025 – Jul 2025",
+      location: "Gurgaon - Remote",
+      highlights: [
+        "Developed full-stack web applications using Java, Spring Boot, HTML, CSS, JavaScript, and MySQL.",
+        "Designed RESTful APIs and integrated backend services with relational databases.",
+        "Built responsive front-end interfaces improving usability and accessibility.",
+        "Optimized data handling workflows for smoother application performance."
+      ]
+    },
+    {
+      company: "Edunet Foundation",
+      role: "AI and Data Analytics Intern",
+      period: "Nov 2024 – Dec 2024",
+      location: "Gurgaon - Remote",
+      highlights: [
+        "Developed an Air Quality Index (AQI) Prediction Model using Python.",
+        "Cleaned and preprocessed environmental datasets for model training.",
+        "Evaluated model accuracy using regression metrics and testing methods.",
+        "Enabled data-driven environmental monitoring and pollution forecasting."
+      ]
+    }
+  ]
 };
 
 export type Stat = {

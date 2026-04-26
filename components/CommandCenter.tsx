@@ -94,6 +94,17 @@ export default function CommandCenter() {
   }, [isOpen]);
 
   useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
@@ -308,7 +319,7 @@ export default function CommandCenter() {
             {/* Content Area */}
             <div
               ref={scrollRef}
-              className="h-[350px] overflow-y-auto p-4 space-y-4 scrollbar-hide bg-ink/20"
+              className="h-[50vh] md:h-[400px] overflow-y-auto p-4 space-y-4 scrollbar-hide bg-ink/20"
             >
               {messages.map((m, i) => (
                 <motion.div
@@ -317,7 +328,7 @@ export default function CommandCenter() {
                   animate={{ opacity: 1, x: 0 }}
                   className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`max-w-[85%] p-3 rounded-sm mono text-[12px] leading-relaxed ${m.role === 'user'
+                  <div className={`max-w-[85%] p-3 rounded-sm mono text-[12px] leading-relaxed whitespace-pre-wrap ${m.role === 'user'
                       ? 'bg-paper/5 text-paper border border-paper/10'
                       : 'bg-acid/5 text-acid border border-acid/10'
                     }`}>
