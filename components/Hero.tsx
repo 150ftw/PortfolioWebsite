@@ -158,9 +158,9 @@ export default function Hero({ booted }: { booted: boolean }) {
       </div>
 
 
-      {/* Profile Photo - Identity Activation Interaction — Intelligent Positioning */}
+      {/* Profile Photo - Identity Activation Interaction — Locked to Bottom-Right on Mobile */}
       <motion.div
-        className="relative md:absolute top-auto bottom-auto md:top-[12vh] md:bottom-auto right-auto md:right-[6vw] ml-auto mr-[6vw] md:mr-0 z-30 w-[42vw] md:w-[22vw] h-[55vw] md:h-[30vw] cursor-none group mt-12 md:mt-0"
+        className="absolute bottom-[6vh] right-[4vw] md:top-[12vh] md:bottom-auto md:right-[6vw] z-30 w-[38vw] md:w-[22vw] h-[50vw] md:h-[30vw] cursor-none group"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
         whileHover={{ scale: 1.02 }}
@@ -297,7 +297,7 @@ export default function Hero({ booted }: { booted: boolean }) {
 
       {/* Mobile bio — shown below the name block */}
       <motion.p
-        className="relative z-10 mx-[6vw] mt-16 max-w-[85vw] editorial text-[15px] italic leading-relaxed text-paper/80 md:hidden"
+        className="relative z-10 mx-[6vw] mt-8 max-w-[85vw] editorial text-[15px] italic leading-relaxed text-paper/80 md:hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
@@ -305,9 +305,9 @@ export default function Hero({ booted }: { booted: boolean }) {
         {owner.aboutBio}
       </motion.p>
 
-      {/* Bottom-left tiny terminal — positioned relatively on mobile to avoid collisions */}
+      {/* Bottom-left tiny terminal — anchored for HUD symmetry */}
       <motion.div
-        className="relative md:absolute left-0 md:left-[6vw] bottom-auto md:bottom-6 mx-[6vw] md:mx-0 mt-20 md:mt-0 z-10 mono text-[10px] md:text-[11px] text-paper/60 flex flex-col"
+        className="absolute left-[6vw] bottom-[6vh] md:bottom-6 z-10 mono text-[10px] md:text-[11px] text-paper/60 flex flex-col"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.3, duration: 0.6 }}
