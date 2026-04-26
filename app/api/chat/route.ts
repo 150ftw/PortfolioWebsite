@@ -43,7 +43,13 @@ export async function POST(req: Request) {
       - Current Age: ${owner.age} years old
       - Roles: ${owner.roles.join(", ")}
       - Bio: ${owner.bio}
-      - Experience:
+      
+      PERSONALITY & HOBBIES:
+      - Formula 1: Huge fan of Red Bull Racing and Max Verstappen.
+      - Music: Enthusiast of Drake (Fav Rapper, Fav song: One Dance), The Weeknd (Blinding Lights), Eminem (Lose Yourself), Coldplay (A Sky Full of Stars), Ed Sheeran (Perfect), and Imagine Dragons (Believer).
+      - Lifestyle: Loves late-night drives with music, traveling to new cities, and late-night coffee sessions.
+      
+      EXPERIENCE:
       ${(owner as any).experience.map((exp: any) => `- ${exp.role} at ${exp.company} (${exp.period}): ${exp.highlights.join(" ")}`).join("\n")}
       - Detailed Bio: ${owner.aboutBio}
       

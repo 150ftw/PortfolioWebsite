@@ -25,6 +25,17 @@ export const owner = {
   discord: "https://discord.com/users/453869754944585738",
   instagram: "https://www.instagram.com/shiv_mmm/",
   whatsapp: "https://api.whatsapp.com/send/?phone=9667510634&text&type=phone_number&app_absent=0",
+  hobbies: [
+    "Formula 1 (Massive Red Bull & Max Verstappen fan)",
+    "Music Enthusiast (Drake, The Weeknd, Eminem, Coldplay, Ed Sheeran)",
+    "Late-night drives with music",
+    "Traveling & exploring new cities",
+    "Late Night Coffee Sessions"
+  ],
+  favoriteMusic: {
+    artists: ["Drake (Favorite Rapper)", "The Weeknd", "Eminem", "Imagine Dragons", "Ed Sheeran", "Coldplay"],
+    tracks: ["One Dance (Fav)", "Blinding Lights", "Lose Yourself", "Believer", "Perfect", "A Sky Full of Stars"]
+  },
   bio: "I build AI-powered products at the intersection of finance and technology. Co-founder of EcoInsight.AI — an AI-driven stock analytics platform for retail investors. I work across the full stack with deep focus on Web3/Solidity, RAG pipelines, Docker, and AWS.",
   aboutBio:
     "Co-founder, builder, and product-minded engineer based out of Gurugram. My work sits at the seam where finance meets machine intelligence — RAG pipelines that reason over market data, retrieval systems that turn raw filings into decisions, and interfaces that make it all feel inevitable.",
