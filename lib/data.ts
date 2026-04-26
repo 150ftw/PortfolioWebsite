@@ -169,7 +169,7 @@ export const projects: Project[] = [
   },
   {
     number: "02",
-    name: "EcoInsight Waitlist",
+    name: "ECOINSIGHT",
     accent: "WAITLIST",
     tagline: "High Converting Launch Page",
     description:

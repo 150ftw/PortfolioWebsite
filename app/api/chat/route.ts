@@ -60,7 +60,11 @@ export async function POST(req: Request) {
       - GitHub: ${owner.github}
       
       PROJECTS:
-      ${projects.map(p => `- ${p.name}: ${p.tagline}. Stack: ${p.stack.join(", ")}`).join("\n")}
+      ${projects.map((p, i) => {
+        // Special case for project 2 naming in the bot
+        const displayName = i === 1 ? "EcoInsight Waitlist" : p.name;
+        return `- ${displayName}: ${p.tagline}. Stack: ${p.stack.join(", ")}`;
+      }).join("\n")}
       
       SKILLS: Next.js, React, TypeScript, AI/LLMs, Web3, Node.js.
       
