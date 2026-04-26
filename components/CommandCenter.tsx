@@ -185,38 +185,58 @@ export default function CommandCenter() {
     }
   };
 
+  const notiSoundRef = useRef<HTMLAudioElement | null>(null);
+
   useEffect(() => {
+    // Pre-create the audio object
+    notiSoundRef.current = new Audio("https://cdn.freesound.org/previews/235/235911_4263053-lq.mp3");
+    notiSoundRef.current.volume = 0.4;
+    notiSoundRef.current.load();
+
     const ua = typeof window !== "undefined" ? window.navigator.userAgent.toLowerCase() : "";
     const isMobile = ua.includes("iphone") || ua.includes("android") || ua.includes("ipad");
     setPlatform(isMobile ? "mobile" : ua.includes("mac") ? "mac" : "windows");
 
+    let timer: NodeJS.Timeout;
+
     const triggerTip = () => {
-      // Use v2 to ensure it shows up again for testing
-      if (localStorage.getItem("commandCenterPromoSeen_v2")) return;
-      
+      if (localStorage.getItem("commandCenterPromoSeen_v4")) return;
       setShowTip(true);
-      
-      // Use a super-reliable interface chirp
-      const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
-      audio.volume = 0.4;
-      
-      audio.load();
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(err => console.log("Audio play blocked by browser policy:", err));
+      if (notiSoundRef.current) {
+        notiSoundRef.current.play().catch(() => {
+          const fallback = new Audio("https://cdn.freesound.org/previews/235/235911_4263053-lq.mp3");
+          fallback.volume = 0.4;
+          fallback.play().catch(() => {});
+        });
       }
-      
       setTimeout(() => setShowTip(false), 15000);
     };
 
-    const timer = setTimeout(triggerTip, 5000);
-    return () => clearTimeout(timer);
+    // Wait for the first user interaction to ensure audio is unlocked
+    const startTimer = () => {
+      timer = setTimeout(triggerTip, 5000);
+      window.removeEventListener("mousedown", startTimer);
+      window.removeEventListener("touchstart", startTimer);
+      window.removeEventListener("keydown", startTimer);
+    };
+
+    // If they already interacted (e.g. from BootScreen), this will catch the next one or wait
+    window.addEventListener("mousedown", startTimer);
+    window.addEventListener("touchstart", startTimer);
+    window.addEventListener("keydown", startTimer);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("mousedown", startTimer);
+      window.removeEventListener("touchstart", startTimer);
+      window.removeEventListener("keydown", startTimer);
+    };
   }, []);
 
   useEffect(() => {
     if (isOpen) {
       setShowTip(false);
-      localStorage.setItem("commandCenterPromoSeen_v2", "true");
+      localStorage.setItem("commandCenterPromoSeen_v4", "true");
     }
   }, [isOpen]);
 
