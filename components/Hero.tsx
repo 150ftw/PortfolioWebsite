@@ -232,8 +232,8 @@ export default function Hero({ booted }: { booted: boolean }) {
             style={{ WebkitMaskImage: maskImage, maskImage } as any}
           />
 
-          {/* Verified Badge / Data */}
-          <div className="absolute bottom-6 left-6 flex flex-col gap-1 z-50 pointer-events-none">
+          {/* Verified Badge / Data — Hidden on mobile for cleaner look */}
+          <div className="absolute bottom-6 left-6 hidden md:flex flex-col gap-1 z-50 pointer-events-none">
               <span className="ui-label text-[8px] text-white/40 tracking-[0.4em] uppercase">Status</span>
               <div className="flex items-center gap-2">
                 <div className="h-1.5 w-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
@@ -242,8 +242,8 @@ export default function Hero({ booted }: { booted: boolean }) {
           </div>
         </div>
         
-        {/* Luxury Spacing / Under-photo data */}
-        <div className="mt-6 flex items-center justify-between px-2 opacity-20 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none">
+        {/* Luxury Spacing / Under-photo data — Hidden on mobile for cleaner look */}
+        <div className="mt-6 hidden md:flex items-center justify-between px-2 opacity-20 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none">
             <div className="flex items-center gap-3">
               <span className="mono text-[8px]">SHVM_UID: 150_FTW</span>
               <div className="h-px w-8 bg-paper/50" />
