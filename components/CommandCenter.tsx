@@ -188,9 +188,10 @@ export default function CommandCenter() {
   const notiSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    // Pre-create the audio object
-    notiSoundRef.current = new Audio("https://cdn.freesound.org/previews/235/235911_4263053-lq.mp3");
-    notiSoundRef.current.volume = 0.4;
+    // Pre-create the audio object with a reliable Mixkit sound
+    const soundUrl = "https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3";
+    notiSoundRef.current = new Audio(soundUrl);
+    notiSoundRef.current.volume = 0.5;
     notiSoundRef.current.load();
 
     const ua = typeof window !== "undefined" ? window.navigator.userAgent.toLowerCase() : "";
@@ -200,12 +201,14 @@ export default function CommandCenter() {
     let timer: NodeJS.Timeout;
 
     const triggerTip = () => {
-      if (localStorage.getItem("commandCenterPromoSeen_v4")) return;
+      if (localStorage.getItem("commandCenterPromoSeen_v5")) return;
       setShowTip(true);
       if (notiSoundRef.current) {
-        notiSoundRef.current.play().catch(() => {
-          const fallback = new Audio("https://cdn.freesound.org/previews/235/235911_4263053-lq.mp3");
-          fallback.volume = 0.4;
+        notiSoundRef.current.play().catch(err => {
+          console.error("Audio playback failed:", err);
+          // Last resort fallback
+          const fallback = new Audio(soundUrl);
+          fallback.volume = 0.5;
           fallback.play().catch(() => {});
         });
       }
@@ -214,13 +217,24 @@ export default function CommandCenter() {
 
     // Wait for the first user interaction to ensure audio is unlocked
     const startTimer = () => {
+      // "Silent Ping" to unlock audio context immediately on interaction
+      if (notiSoundRef.current) {
+        notiSoundRef.current.muted = true;
+        notiSoundRef.current.play().then(() => {
+          if (notiSoundRef.current) {
+            notiSoundRef.current.pause();
+            notiSoundRef.current.currentTime = 0;
+            notiSoundRef.current.muted = false;
+          }
+        }).catch(() => {});
+      }
+
       timer = setTimeout(triggerTip, 5000);
       window.removeEventListener("mousedown", startTimer);
       window.removeEventListener("touchstart", startTimer);
       window.removeEventListener("keydown", startTimer);
     };
 
-    // If they already interacted (e.g. from BootScreen), this will catch the next one or wait
     window.addEventListener("mousedown", startTimer);
     window.addEventListener("touchstart", startTimer);
     window.addEventListener("keydown", startTimer);
@@ -236,7 +250,7 @@ export default function CommandCenter() {
   useEffect(() => {
     if (isOpen) {
       setShowTip(false);
-      localStorage.setItem("commandCenterPromoSeen_v4", "true");
+      localStorage.setItem("commandCenterPromoSeen_v5", "true");
     }
   }, [isOpen]);
 
@@ -530,7 +544,7 @@ export default function CommandCenter() {
             <button
               onClick={() => {
                 setShowTip(false);
-                localStorage.setItem("commandCenterPromoSeen_v1", "true");
+                localStorage.setItem("commandCenterPromoSeen_v5", "true");
               }}
               className="p-1 hover:bg-paper/10 text-paper/30 hover:text-paper transition-all rounded-full"
             >
