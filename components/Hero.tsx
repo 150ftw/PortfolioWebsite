@@ -74,7 +74,7 @@ export default function Hero({ booted }: { booted: boolean }) {
 
   const maskImage = useTransform(
     [smoothX, smoothY, smoothRadius],
-    ([x, y, r]) => `radial-gradient(circle ${r}px at ${x}% ${y}%, black ${r * 0.2}px, transparent ${r}px)`
+    ([x, y, r]) => `radial-gradient(circle ${r as number}px at ${x as number}% ${y as number}%, black ${(r as number) * 0.2}px, transparent ${r as number}px)`
   );
 
   return (
