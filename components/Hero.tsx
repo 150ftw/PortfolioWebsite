@@ -374,6 +374,9 @@ function MusicPlayer() {
   const togglePlay = async () => {
     if (!audioRef.current) return;
     
+    // Set a comfortable background volume (0.0 to 1.0)
+    audioRef.current.volume = 0.4;
+    
     try {
       if (isPlaying) {
         audioRef.current.pause();
