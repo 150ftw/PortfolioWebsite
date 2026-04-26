@@ -360,7 +360,7 @@ export default function CommandCenter() {
                   data-cursor
                   data-cursor-label="TYPE"
                   placeholder={mode === 'command' ? "Type a command (goto, chat, help)..." : "Ask Eko anything..."}
-                  className="w-full bg-paper/5 border border-paper/10 pl-10 pr-12 py-3 mono text-[13px] text-paper outline-none focus:border-acid/40 transition-colors"
+                  className="w-full bg-paper/5 border border-paper/10 pl-10 pr-12 py-3 mono text-[16px] md:text-[13px] text-paper outline-none focus:border-acid/40 transition-colors"
                 />
                 <div className="absolute right-3 flex items-center gap-2">
                   <div className="flex items-center gap-1 px-2 py-1 rounded-sm bg-paper/5 border border-paper/10 text-[9px] mono text-paper/40">
