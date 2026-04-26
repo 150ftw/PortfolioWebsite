@@ -30,6 +30,107 @@ export default function CommandCenter() {
   const inputRefValue = useRef(input);
   const handleCommandRef = useRef<any>(null);
 
+  const sendMessage = async (content: string) => {
+    if (!content.trim()) return;
+
+    const newMessages: Message[] = [...messages, { role: "user", content }];
+    setMessages(newMessages);
+    setInput("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: newMessages }),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.details || errData.error || "Failed to fetch response");
+      }
+
+      // Handle streaming response manually since ai/react isn't working
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let assistantContent = "";
+
+      setMessages(prev => [...prev, { role: "assistant", content: "" }]);
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+          for (const line of lines) {
+            if (line.startsWith('0:')) {
+              try {
+                const text = JSON.parse(line.substring(2));
+                assistantContent += text;
+                setMessages(prev => {
+                  const last = prev[prev.length - 1];
+                  if (last.role === "assistant") {
+                    return [...prev.slice(0, -1), { ...last, content: assistantContent }];
+                  }
+                  return prev;
+                });
+              } catch (e) { }
+            }
+          }
+        }
+      }
+    } catch (error: any) {
+      console.error("Chat error:", error);
+      setMessages(prev => [...prev, { role: "assistant", content: `ERROR: ${error.message}` }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCommand = async (cmd: string) => {
+    const c = cmd.toLowerCase().trim();
+
+    // System Commands
+    if (c.startsWith("goto ")) {
+      const target = c.replace("goto ", "");
+      const section = navSections.find(s => s.label.toLowerCase() === target || s.id === target);
+      if (section) {
+        document.getElementById(section.id)?.scrollIntoView({ behavior: "smooth" });
+        setIsOpen(false);
+        return;
+      }
+    }
+
+    if (c === "chat" || c === "agent") {
+      setMode("agent");
+      setInput("");
+      return;
+    }
+
+    if (c === "clear") {
+      setMessages([{ role: "assistant", content: "History cleared. Eko ready." }]);
+      setInput("");
+      return;
+    }
+
+    if (c === "exit" || c === "quit") {
+      setIsOpen(false);
+      return;
+    }
+
+    // Default: Handle as conversation
+    await sendMessage(cmd);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (input.trim()) {
+      handleCommand(input);
+    }
+  };
+
   useEffect(() => {
     inputRefValue.current = input;
   }, [input]);
@@ -190,109 +291,6 @@ export default function CommandCenter() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
-
-  const handleCommand = async (cmd: string) => {
-    const c = cmd.toLowerCase().trim();
-
-    // System Commands
-    if (c.startsWith("goto ")) {
-      const target = c.replace("goto ", "");
-      const section = navSections.find(s => s.label.toLowerCase() === target || s.id === target);
-      if (section) {
-        document.getElementById(section.id)?.scrollIntoView({ behavior: "smooth" });
-        setIsOpen(false);
-        return;
-      }
-    }
-
-    if (c === "chat" || c === "agent") {
-      setMode("agent");
-      setInput("");
-      return;
-    }
-
-    if (c === "clear") {
-      setMessages([{ role: "assistant", content: "History cleared. Eko ready." }]);
-      setInput("");
-      return;
-    }
-
-    if (c === "exit" || c === "quit") {
-      setIsOpen(false);
-      return;
-    }
-
-    // Default: Handle as conversation
-    await sendMessage(cmd);
-  };
-
-  const sendMessage = async (content: string) => {
-    if (!content.trim()) return;
-
-    const newMessages: Message[] = [...messages, { role: "user", content }];
-    setMessages(newMessages);
-    setInput("");
-    setIsLoading(true);
-
-    try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
-      });
-
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.details || errData.error || "Failed to fetch response");
-      }
-
-      // Handle streaming response manually since ai/react isn't working
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      let assistantContent = "";
-
-      setMessages(prev => [...prev, { role: "assistant", content: "" }]);
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value, { stream: true });
-          // Note: Vercel AI SDK DataStream format starts with prefixes like 0:"..."
-          // We'll do a simple regex to extract the text content from the stream chunks
-          const lines = chunk.split('\n');
-          for (const line of lines) {
-            if (line.startsWith('0:')) {
-              try {
-                const text = JSON.parse(line.substring(2));
-                assistantContent += text;
-                setMessages(prev => {
-                  const last = prev[prev.length - 1];
-                  if (last.role === "assistant") {
-                    return [...prev.slice(0, -1), { ...last, content: assistantContent }];
-                  }
-                  return prev;
-                });
-              } catch (e) { }
-            }
-          }
-        }
-      }
-    } catch (error: any) {
-      console.error("Chat error:", error);
-      setMessages(prev => [...prev, { role: "assistant", content: `ERROR: ${error.message}` }]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (input.trim()) {
-      handleCommand(input);
-    }
-  };
 
   const renderRawUrls = (text: string, keyPrefix: number) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
