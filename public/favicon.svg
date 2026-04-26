@@ -1,7 +1,7 @@
 <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  {/* Modern Luxury 'S' Monogram - Bold, High-Contrast, Transparent Background */}
+  {/* High-Legibility Modern 'S' Monogram - Ultra-Bold, Sharp, Transparent */}
   <path 
-    d="M5 5H95V38H35V62H95V95H5V62H65V38H5V5Z" 
+    d="M5 5H95V42H32V58H95V95H5V58H68V42H5V5Z" 
     fill="white"
   />
 </svg>
