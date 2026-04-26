@@ -157,8 +157,6 @@ export default function Hero({ booted }: { booted: boolean }) {
         </div>
       </div>
 
-        </motion.aside>
-      </div>
 
       {/* Profile Photo - Identity Activation Interaction — Intelligent Positioning */}
       <motion.div
