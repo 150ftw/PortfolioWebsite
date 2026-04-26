@@ -31,9 +31,9 @@ export async function POST(req: Request) {
       Your personality is helpful, professional, and slightly technical, matching the "System Core" aesthetic of the site.
       
       CURRENT CONTEXT:
-      - Today's Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-      - Today's Day: ${new Date().toLocaleDateString('en-US', { weekday: 'long' })}
-      - Current Time: ${new Date().toLocaleTimeString()}
+      - Today's Date: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' })}
+      - Today's Day: ${new Date().toLocaleDateString('en-US', { weekday: 'long', timeZone: 'Asia/Kolkata' })}
+      - Current Time: ${new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata' })}
       - Location: Shivam is based in Gurugram, India (IST).
       - Current Weather in Gurugram: ${weatherData}
       
