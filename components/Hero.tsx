@@ -1,6 +1,6 @@
-import { motion, useReducedMotion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect, useRef } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, Play, Pause } from "lucide-react";
 import { owner } from "@/lib/data";
 
 /**
@@ -154,6 +154,16 @@ export default function Hero({ booted }: { booted: boolean }) {
               {owner.lastName}
             </motion.span>
           </h2>
+
+          {/* NEW: Music Player — Floating underneath the name */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={booted ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 1.5, duration: 0.8 }}
+            className="pointer-events-auto mt-12 ml-[8vw] flex items-center gap-6"
+          >
+            <MusicPlayer />
+          </motion.div>
         </div>
       </div>
 
@@ -351,6 +361,95 @@ export default function Hero({ booted }: { booted: boolean }) {
         <span className="mono text-[9px] uppercase tracking-[0.6em] [writing-mode:vertical-lr]">NODE_STABLE</span>
       </div>
     </section>
+  );
+}
+
+function MusicPlayer() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
+    <div className="flex items-center gap-4 group/player">
+      <audio 
+        ref={audioRef} 
+        src="https://p.scdn.co/mp3-preview/742217c45f4ca61286a51d2f8df4a42b93f6f9e2?cid=774b29d4f13844c495f2061947e4d83f" 
+        onEnded={() => setIsPlaying(false)}
+      />
+      
+      <motion.button
+        onClick={togglePlay}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="h-12 w-12 rounded-full border border-paper/20 bg-paper/5 flex items-center justify-center text-paper hover:border-acid hover:text-acid transition-colors relative"
+      >
+        <AnimatePresence mode="wait">
+          {isPlaying ? (
+            <motion.div
+              key="pause"
+              initial={{ opacity: 0, rotate: -90 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: 90 }}
+            >
+              <Pause size={18} fill="currentColor" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="play"
+              initial={{ opacity: 0, rotate: 90 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: -90 }}
+            >
+              <Play size={18} fill="currentColor" className="ml-0.5" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        {/* Pulsing ring when playing */}
+        {isPlaying && (
+          <motion.div 
+            className="absolute -inset-1 rounded-full border border-acid/30"
+            animate={{ scale: [1, 1.3], opacity: [0.3, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+        )}
+      </motion.button>
+
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2">
+          <span className="ui-label text-[10px] text-paper/80 tracking-[0.2em] uppercase">Now Playing</span>
+          <div className="flex gap-[2px] h-2 items-end">
+            {[...Array(4)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-[2px] bg-acid"
+                animate={isPlaying ? { height: [2, 8, 3, 6, 2] } : { height: 2 }}
+                transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1 }}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="flex items-baseline gap-2">
+          <span className="mono text-[12px] text-paper font-bold uppercase tracking-tight">One Dance</span>
+          <span className="mono text-[9px] text-paper/40">— DRAKE</span>
+        </div>
+      </div>
+
+      {/* Technical Data Overlay */}
+      <div className="hidden lg:flex flex-col gap-0.5 ml-6 pl-6 border-l border-paper/10 opacity-20">
+        <span className="mono text-[8px]">FREQ_LOCK: 44.1kHz</span>
+        <span className="mono text-[8px]">BITRATE: 320kbps</span>
+      </div>
+    </div>
   );
 }
 
