@@ -158,7 +158,7 @@ export default function Hero({ booted }: { booted: boolean }) {
 
         {/* Profile Photo - Identity Activation Interaction */}
         <motion.div
-          className="absolute bottom-[6vh] md:top-[12vh] md:bottom-auto right-[4vw] md:right-[6vw] z-30 w-[38vw] md:w-[22vw] h-[50vw] md:h-[30vw] cursor-none group"
+          className="absolute top-auto bottom-[6vh] md:top-[12vh] md:bottom-auto right-[4vw] md:right-[6vw] z-30 w-[38vw] md:w-[22vw] h-[50vw] md:h-[30vw] cursor-none group"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
           whileHover={{ scale: 1.02 }}
