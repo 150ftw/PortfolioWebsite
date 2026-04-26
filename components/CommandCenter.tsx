@@ -211,6 +211,7 @@ export default function CommandCenter() {
           fallback.volume = 0.5;
           fallback.play().catch(() => {});
         });
+      }
       // Hide after 7 seconds
       setTimeout(() => setShowTip(false), 7000);
     };
