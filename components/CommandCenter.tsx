@@ -201,7 +201,7 @@ export default function CommandCenter() {
     let timer: NodeJS.Timeout;
 
     const triggerTip = () => {
-      if (localStorage.getItem("commandCenterPromoSeen_v5")) return;
+      if (localStorage.getItem("commandCenterPromoSeen_v6")) return;
       setShowTip(true);
       if (notiSoundRef.current) {
         notiSoundRef.current.play().catch(err => {
@@ -211,8 +211,8 @@ export default function CommandCenter() {
           fallback.volume = 0.5;
           fallback.play().catch(() => {});
         });
-      }
-      setTimeout(() => setShowTip(false), 15000);
+      // Hide after 7 seconds
+      setTimeout(() => setShowTip(false), 7000);
     };
 
     // Wait for the first user interaction to ensure audio is unlocked
@@ -250,7 +250,7 @@ export default function CommandCenter() {
   useEffect(() => {
     if (isOpen) {
       setShowTip(false);
-      localStorage.setItem("commandCenterPromoSeen_v5", "true");
+      localStorage.setItem("commandCenterPromoSeen_v6", "true");
     }
   }, [isOpen]);
 
@@ -544,7 +544,7 @@ export default function CommandCenter() {
             <button
               onClick={() => {
                 setShowTip(false);
-                localStorage.setItem("commandCenterPromoSeen_v5", "true");
+                localStorage.setItem("commandCenterPromoSeen_v6", "true");
               }}
               className="p-1 hover:bg-paper/10 text-paper/30 hover:text-paper transition-all rounded-full"
             >
