@@ -281,14 +281,16 @@ export default function CommandCenter() {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-start justify-center md:items-center bg-ink/95 backdrop-blur-md pt-[10vh] md:pt-0 p-[4vw] md:p-0"
+        >
           {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
+            className="absolute inset-0"
             onClick={() => setIsOpen(false)}
-            className="absolute inset-0 bg-ink/80 backdrop-blur-sm"
           />
 
           {/* Modal */}
