@@ -295,14 +295,14 @@ export default function Hero({ booted }: { booted: boolean }) {
         </motion.p>
       </div>
 
-      {/* Bottom-right Playfair bio — moved slightly to avoid photo crowd */}
+      {/* Desktop Bio — Moved to the left to avoid photo HUD collision on laptops */}
       <motion.aside
-        className="absolute right-[4vw] bottom-[10vh] z-10 hidden max-w-[300px] md:block"
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
+        className="absolute left-[4vw] bottom-[28vh] z-10 hidden max-w-[350px] md:block"
+        initial={{ opacity: 0, x: -24 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.2, duration: 0.7 }}
       >
-        <p className="editorial text-[1.1rem] italic leading-relaxed text-paper/90 text-right">
+        <p className="editorial text-[1.1rem] italic leading-relaxed text-paper/80">
           {owner.bio}
         </p>
       </motion.aside>
