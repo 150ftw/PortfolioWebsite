@@ -270,6 +270,21 @@ html {
 /* Dashboard wireframe — pure CSS                          */
 /* ─────────────────────────────────────────────────────── */
 
+@keyframes scan-once {
+  0% { top: 0%; opacity: 0; }
+  50% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); opacity: 1; filter: grayscale(0); }
+  20% { transform: translate(-3px, 2px); opacity: 0.8; filter: hue-rotate(90deg); }
+  40% { transform: translate(3px, -2px); opacity: 0.9; filter: contrast(150%); }
+  60% { transform: translate(-3px, -2px); opacity: 0.8; filter: invert(10%); }
+  80% { transform: translate(3px, 2px); opacity: 0.9; filter: hue-rotate(-90deg); }
+  100% { transform: translate(0); opacity: 1; filter: grayscale(0); }
+}
+
 .wire-card {
   border: 1px solid rgba(240, 237, 230, 0.2);
   border-radius: 2px;

@@ -93,50 +93,131 @@ export default function Hero({ booted }: { booted: boolean }) {
       {/* Name block — receives letter layoutIds from BootScreen */}
       <div
         ref={nameRef}
-        className="relative z-10 pt-[24vw] md:pt-[10vw]"
+        className="relative z-10 pt-[24vw] md:pt-[10vw] flex flex-col md:flex-row md:items-start justify-between px-[4vw]"
       >
-        {/* SHIVAM — bleeds off the right intentionally */}
-        <h1
-          className="brutal-heading whitespace-nowrap pl-[4vw] text-paper"
-          style={{ fontSize: "20vw", lineHeight: 0.82 }}
-        >
-          {LETTERS.map((letter, i) => (
-            <motion.span
-              key={`hero-${i}`}
-              layoutId={booted ? undefined : `hero-letter-${i}`}
-              className="inline-block"
-              initial={booted ? { y: 60, opacity: 0 } : undefined}
-              animate={booted ? { y: 0, opacity: 1 } : undefined}
-              transition={{
-                delay: 0.05 * i,
-                duration: 0.6,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
-              {letter}
-            </motion.span>
-          ))}
-        </h1>
-
-        {/* SHARMA — offset right, acid-green */}
-        <h2
-          className="brutal-heading whitespace-nowrap text-acid"
-          style={{
-            fontSize: "20vw",
-            lineHeight: 0.82,
-            paddingLeft: "12vw",
-            marginTop: "-0.1em",
-          }}
-        >
-          <motion.span
-            initial={{ y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-block"
+        <div className="flex flex-col">
+          {/* SHIVAM — bleeds off the right intentionally */}
+          <h1
+            className="brutal-heading whitespace-nowrap text-paper"
+            style={{ fontSize: "20vw", lineHeight: 0.82 }}
           >
-            {owner.lastName}
-          </motion.span>
-        </h2>
+            {LETTERS.map((letter, i) => (
+              <motion.span
+                key={`hero-${i}`}
+                layoutId={booted ? undefined : `hero-letter-${i}`}
+                className="inline-block"
+                initial={booted ? { y: 60, opacity: 0 } : undefined}
+                animate={booted ? { y: 0, opacity: 1 } : undefined}
+                transition={{
+                  delay: 0.05 * i,
+                  duration: 0.6,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </h1>
+
+          {/* SHARMA — offset right, acid-green */}
+          <h2
+            className="brutal-heading whitespace-nowrap text-acid"
+            style={{
+              fontSize: "20vw",
+              lineHeight: 0.82,
+              paddingLeft: "8vw",
+              marginTop: "-0.1em",
+            }}
+          >
+            <motion.span
+              initial={{ y: 80, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-block"
+            >
+              {owner.lastName}
+            </motion.span>
+          </h2>
+        </div>
+
+        {/* Profile Photo - Identity Activation Interaction */}
+        <div className="relative mt-12 md:mt-0 z-20 flex flex-col items-center">
+          <motion.div
+            className="relative w-[65vw] md:w-[24vw] h-[80vw] md:h-[30vw] cursor-crosshair group"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+            transition={{ delay: 0.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const x = (e.clientX - rect.left) / rect.width - 0.5;
+              const y = (e.clientY - rect.top) / rect.height - 0.5;
+              const target = e.currentTarget as HTMLElement;
+              target.style.setProperty('--mx', `${x * 15}px`);
+              target.style.setProperty('--my', `${y * 15}px`);
+            }}
+            onMouseLeave={(e) => {
+              const target = e.currentTarget as HTMLElement;
+              target.style.setProperty('--mx', '0px');
+              target.style.setProperty('--my', '0px');
+            }}
+            style={{
+              transform: 'translate(var(--mx, 0), var(--my, 0))',
+              transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
+            } as any}
+          >
+            {/* Soft Shadow & Background Glow */}
+            <div className="absolute -inset-4 bg-acid/0 group-hover:bg-cyan-500/10 blur-3xl transition-colors duration-700 rounded-full" />
+            
+            <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-paper/10 bg-paper/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+              {/* Image 1: Default Clean */}
+              <motion.img 
+                src="/images/shivam-base.png" 
+                alt="Shivam Sharma"
+                className="absolute inset-0 w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                animate={{ 
+                  opacity: 1,
+                  scale: 1
+                }}
+                whileHover={{ scale: 1.03 }}
+              />
+
+              {/* Image 2: Cyber Portrait (Visible on Hover) */}
+              <motion.img 
+                src="/images/shivam-cyber.png" 
+                alt="Shivam Sharma Cyber"
+                className="absolute inset-0 w-full h-full object-cover mix-blend-screen opacity-0 group-hover:opacity-100 transition-all duration-500"
+                whileHover={{ scale: 1.03 }}
+              />
+
+              {/* Glitch Flicker Overlay (Short duration on hover) */}
+              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:animate-[glitch_0.25s_ease-in-out_1] bg-cyan-500/10 mix-blend-overlay" />
+
+              {/* HUD Accents */}
+              <div className="absolute inset-0 border-[1px] border-paper/5 rounded-[2rem] pointer-events-none" />
+              
+              {/* Scanning line sweep once on hover */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-cyan-400/30 opacity-0 group-hover:animate-[scan-once_0.8s_ease-in-out_1] z-30" />
+
+              {/* Verified Badge / Data */}
+              <div className="absolute bottom-6 left-6 flex flex-col gap-1 z-30">
+                 <span className="ui-label text-[8px] text-paper/40 tracking-[0.4em] uppercase">Status</span>
+                 <div className="flex items-center gap-2">
+                    <div className="h-1.5 w-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+                    <span className="ui-label text-[10px] text-paper tracking-[0.2em] group-hover:text-cyan-400 transition-colors">IDENTITY_VERIFIED</span>
+                 </div>
+              </div>
+            </div>
+            
+            {/* Luxury Spacing / Under-photo data */}
+            <div className="mt-6 flex items-center justify-between px-2 opacity-20 group-hover:opacity-40 transition-opacity duration-500">
+               <div className="flex items-center gap-3">
+                  <span className="mono text-[8px]">SHVM_UID: 150_FTW</span>
+                  <div className="h-px w-8 bg-paper/50" />
+               </div>
+               <span className="mono text-[8px]">BIO_SYNC: 98.4%</span>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Rule + role line — bottom-left */}
@@ -169,14 +250,14 @@ export default function Hero({ booted }: { booted: boolean }) {
         </motion.p>
       </div>
 
-      {/* Bottom-right Playfair bio — overlaps intentionally, hidden on mobile */}
+      {/* Bottom-right Playfair bio — moved slightly to avoid photo crowd */}
       <motion.aside
-        className="absolute right-[4vw] bottom-[14vh] z-10 hidden max-w-[340px] md:block"
+        className="absolute right-[4vw] bottom-[10vh] z-10 hidden max-w-[300px] md:block"
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.7 }}
       >
-        <p className="editorial text-[1.2rem] italic leading-relaxed text-paper/90">
+        <p className="editorial text-[1.1rem] italic leading-relaxed text-paper/90 text-right">
           {owner.bio}
         </p>
       </motion.aside>
