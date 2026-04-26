@@ -27,6 +27,17 @@ export default function CommandCenter() {
   const [showTip, setShowTip] = useState(false);
   const [platform, setPlatform] = useState<"mac" | "windows" | "mobile">("windows");
 
+  const inputRefValue = useRef(input);
+  const handleCommandRef = useRef<any>(null);
+
+  useEffect(() => {
+    inputRefValue.current = input;
+  }, [input]);
+
+  useEffect(() => {
+    handleCommandRef.current = handleCommand;
+  }, [handleCommand]);
+
   useEffect(() => {
     // Initialize Speech Recognition
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -42,6 +53,10 @@ export default function CommandCenter() {
 
       recognitionRef.current.onend = () => {
         setIsListening(false);
+        // Auto-submit if there's input
+        if (inputRefValue.current.trim()) {
+          handleCommandRef.current?.(inputRefValue.current);
+        }
       };
 
       recognitionRef.current.onerror = (event: any) => {
