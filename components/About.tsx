@@ -176,6 +176,10 @@ export default function About({ booted }: { booted: boolean }) {
               <DynamicCoord />
             </div>
             <div className="flex flex-col gap-1">
+              <span className="ui-label text-[9px] text-ink/40 uppercase">Entity_Epoch</span>
+              <span className="mono text-[10px] text-ink/60">{owner.dob} — {owner.age}Y</span>
+            </div>
+            <div className="flex flex-col gap-1">
               <span className="ui-label text-[9px] text-ink/40 uppercase">Module_ID</span>
               <span className="mono text-[10px] text-ink/60">PHILO_01_ALPHA</span>
             </div>
@@ -486,7 +490,14 @@ function TerminalBlock({ play }: { play: boolean }) {
         response = `ACCESSING_STORAGE: [Click to view resume](${owner.resume})`;
         break;
       case "whoami":
-        response = "SHIVAM_SHARMA: Full-Stack Developer & AI Builder. Co-founder @ EcoInsight.AI.";
+        response = [
+          "ENTITY_PROFILE:",
+          ` - NAME: ${owner.name.toUpperCase()}`,
+          ` - BORN: ${owner.dob}`,
+          ` - AGE: ${owner.age}Y`,
+          ` - ROLE: Full-Stack Developer & AI Builder`,
+          " - STATUS: Building the future"
+        ];
         break;
       case "clear":
         setHistory([]);
