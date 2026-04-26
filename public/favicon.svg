@@ -1,20 +1,7 @@
 <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  {/* Dark high-contrast background to anchor the icon */}
-  <rect width="100" height="100" rx="16" fill="#050505"/>
-  
-  {/* The "S" Monogram - Engineered for 90% fill and maximum legibility */}
+  {/* Modern Luxury 'S' Monogram - Bold, High-Contrast, Transparent Background */}
   <path 
-    d="M22 28H78L70 46H30L22 28Z" 
-    fill="white"
-  />
-  <path 
-    d="M22 28V72H78V54H34V62H66V54H22V28Z" 
-    fill="white"
-  />
-  
-  {/* Sharp diagonal accent for the "S" character */}
-  <path 
-    d="M78 72L70 54H78V72Z" 
+    d="M5 5H95V38H35V62H95V95H5V62H65V38H5V5Z" 
     fill="white"
   />
 </svg>
