@@ -388,13 +388,15 @@ function MusicPlayer() {
   };
 
   return (
-    <div className="flex items-center gap-4 group/player">
-      <audio 
-        ref={audioRef} 
-        src="/One Dance - Drake.mp3" 
-        preload="auto"
-        onEnded={() => setIsPlaying(false)}
-      />
+    <div className="flex flex-col gap-2">
+      <span className="ui-label text-[9px] text-paper/30 tracking-[0.4em] uppercase">Current Fav Song</span>
+      <div className="flex items-center gap-4 group/player">
+        <audio 
+          ref={audioRef} 
+          src="/One Dance - Drake.mp3" 
+          preload="auto"
+          onEnded={() => setIsPlaying(false)}
+        />
       
       <motion.button
         onClick={togglePlay}
