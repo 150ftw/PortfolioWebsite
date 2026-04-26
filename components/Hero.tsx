@@ -308,9 +308,9 @@ export default function Hero({ booted }: { booted: boolean }) {
         </motion.div>
       </div>
 
-      {/* Mobile bio — shown below the name block for small screens */}
+      {/* Mobile bio — now with more width for better flow */}
       <motion.p
-        className="relative z-10 mx-[6vw] mt-8 max-w-[55vw] editorial text-[14px] italic leading-relaxed text-paper/80 md:hidden"
+        className="relative z-10 mx-[6vw] mt-12 max-w-[85vw] editorial text-[15px] italic leading-relaxed text-paper/80 md:hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
@@ -318,9 +318,9 @@ export default function Hero({ booted }: { booted: boolean }) {
         {owner.bio}
       </motion.p>
 
-      {/* Bottom-left tiny terminal — anchored for HUD symmetry */}
+      {/* Terminal — now relative on mobile to follow the bio flow, absolute on desktop */}
       <motion.div
-        className="absolute left-[6vw] bottom-[6vh] md:bottom-6 z-10 mono text-[10px] md:text-[11px] text-paper/60 flex flex-col"
+        className="relative md:absolute left-[6vw] mt-12 md:bottom-6 z-10 mono text-[10px] md:text-[11px] text-paper/60 flex flex-col"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.3, duration: 0.6 }}
