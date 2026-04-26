@@ -169,9 +169,9 @@ export const projects: Project[] = [
   },
   {
     number: "02",
-    name: "ECOINSIGHT",
+    name: "EcoInsight Waitlist",
     accent: "WAITLIST",
-    tagline: "HIGH-CONVERTING LAUNCH PAGE",
+    tagline: "High Converting Launch Page",
     description:
       "A waitlist system engineered to capture early users, validate demand, and compound launch momentum for EcoInsight.AI. Pixel-perfect on every viewport, zero friction on signup.",
     stack: ["Next.js", "React", "Tailwind CSS", "Firebase"],
