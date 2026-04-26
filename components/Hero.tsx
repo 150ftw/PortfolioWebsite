@@ -391,9 +391,8 @@ function MusicPlayer() {
     <div className="flex items-center gap-4 group/player">
       <audio 
         ref={audioRef} 
-        src="https://ia801602.us.archive.org/32/items/drake-one-dance-ft.-wizkid-kyla/Drake%20-%20One%20Dance%20%28ft.%20Wizkid%20%26%20Kyla%29.mp3" 
+        src="/One Dance - Drake.mp3" 
         preload="auto"
-        crossOrigin="anonymous"
         onEnded={() => setIsPlaying(false)}
       />
       
