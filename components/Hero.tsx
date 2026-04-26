@@ -113,7 +113,7 @@ export default function Hero({ booted }: { booted: boolean }) {
           <h1
             className="brutal-heading whitespace-nowrap text-paper"
             style={{ 
-              fontSize: "clamp(3.2rem, 14vw, 20vw)", 
+              fontSize: "clamp(3.2rem, 14vw, 16vw)", 
               lineHeight: 0.85 
             }}
           >
@@ -139,7 +139,7 @@ export default function Hero({ booted }: { booted: boolean }) {
           <h2
             className="brutal-heading whitespace-nowrap text-acid"
             style={{
-              fontSize: "clamp(3.2rem, 14vw, 20vw)",
+              fontSize: "clamp(3.2rem, 14vw, 16vw)",
               lineHeight: 0.85,
               paddingLeft: "8vw",
               marginTop: "-0.05em",
@@ -157,9 +157,12 @@ export default function Hero({ booted }: { booted: boolean }) {
         </div>
       </div>
 
-      {/* Profile Photo - Identity Activation Interaction — Moved outside container for true absolute positioning */}
+        </motion.aside>
+      </div>
+
+      {/* Profile Photo - Identity Activation Interaction — Intelligent Positioning */}
       <motion.div
-        className="absolute top-auto bottom-[6vh] md:top-[12vh] md:bottom-auto right-[4vw] md:right-[6vw] z-30 w-[38vw] md:w-[22vw] h-[50vw] md:h-[30vw] cursor-none group"
+        className="relative md:absolute top-auto bottom-auto md:top-[12vh] md:bottom-auto right-auto md:right-[6vw] ml-auto mr-[6vw] md:mr-0 z-30 w-[42vw] md:w-[22vw] h-[55vw] md:h-[30vw] cursor-none group mt-12 md:mt-0"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={booted ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
         whileHover={{ scale: 1.02 }}
@@ -304,9 +307,9 @@ export default function Hero({ booted }: { booted: boolean }) {
         {owner.aboutBio}
       </motion.p>
 
-      {/* Bottom-left tiny terminal — above CTA so they don't overlap on mobile */}
+      {/* Bottom-left tiny terminal — positioned relatively on mobile to avoid collisions */}
       <motion.div
-        className="absolute left-[6vw] bottom-24 md:bottom-6 z-10 mono text-[10px] md:text-[11px] text-paper/60 flex flex-col"
+        className="relative md:absolute left-0 md:left-[6vw] bottom-auto md:bottom-6 mx-[6vw] md:mx-0 mt-20 md:mt-0 z-10 mono text-[10px] md:text-[11px] text-paper/60 flex flex-col"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.3, duration: 0.6 }}
