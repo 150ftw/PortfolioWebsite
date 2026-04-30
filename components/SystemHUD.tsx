@@ -2,11 +2,11 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Activity, Cpu, Shield, Wifi } from "lucide-react";
+import { Activity, Cpu, Shield, Wifi, Volume2, VolumeX } from "lucide-react";
 import { useUI } from "./UIContext";
 
 export default function SystemHUD() {
-  const { isHudVisible } = useUI();
+  const { isHudVisible, isAudioPlaying, setIsAudioPlaying } = useUI();
   const [metrics, setMetrics] = useState({
     cpu: 42,
     mem: 68,
@@ -78,16 +78,12 @@ export default function SystemHUD() {
                 <Activity size={14} className="text-acid" />
                 <span className="mono text-[10px] text-acid uppercase tracking-tighter">Heartbeat_Sync_Active</span>
               </div>
-              <div className="flex gap-1">
-                {[...Array(4)].map((_, i) => (
-                  <motion.div 
-                    key={i}
-                    className="h-3 w-1 bg-acid/40"
-                    animate={{ height: [4, 12, 4] }}
-                    transition={{ duration: 0.8, delay: i * 0.1, repeat: Infinity }}
-                  />
-                ))}
-              </div>
+              <button 
+                onClick={() => setIsAudioPlaying(!isAudioPlaying)}
+                className="flex items-center justify-center p-1.5 border border-acid/20 hover:bg-acid/10 transition-colors"
+              >
+                {isAudioPlaying ? <Volume2 size={12} className="text-acid" /> : <VolumeX size={12} className="text-acid/40" />}
+              </button>
             </motion.div>
           </motion.div>
         )}

@@ -367,101 +367,93 @@ export default function Hero({ booted }: { booted: boolean }) {
   );
 }
 
-function MusicPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+import { useUI } from "./UIContext";
 
-  const togglePlay = async () => {
-    if (!audioRef.current) return;
-    
-    // Set a comfortable background volume (0.0 to 1.0)
-    audioRef.current.volume = 0.4;
-    
-    try {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        await audioRef.current.play();
-        setIsPlaying(true);
-      }
-    } catch (err) {
-      console.error("Playback failed:", err);
-      setIsPlaying(false);
-    }
-  };
+function MusicPlayer() {
+  const { isAudioPlaying, setIsAudioPlaying } = useUI();
 
   return (
     <div className="flex flex-col gap-2">
       <span className="ui-label text-[9px] text-paper/30 tracking-[0.4em] uppercase">Current Fav Song</span>
       <div className="flex items-center gap-4 group/player">
-        <audio 
-          ref={audioRef} 
-          src="/One Dance - Drake.mp3" 
-          preload="auto"
-          onEnded={() => setIsPlaying(false)}
-        />
-        
         <motion.button
-          onClick={togglePlay}
+          onClick={() => setIsAudioPlaying(!isAudioPlaying)}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className="h-12 w-12 rounded-full border border-paper/20 bg-paper/5 flex items-center justify-center text-paper hover:border-acid hover:text-acid transition-colors relative"
+          className="h-16 w-16 rounded-full border border-paper/10 bg-paper/5 flex items-center justify-center text-paper hover:border-acid hover:text-acid transition-all relative overflow-hidden"
         >
           <AnimatePresence mode="wait">
-            {isPlaying ? (
+            {isAudioPlaying ? (
               <motion.div
                 key="pause"
-                initial={{ opacity: 0, rotate: -90 }}
-                animate={{ opacity: 1, rotate: 0 }}
-                exit={{ opacity: 0, rotate: 90 }}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
               >
-                <Pause size={18} fill="currentColor" />
+                <Pause size={24} fill="currentColor" />
               </motion.div>
             ) : (
               <motion.div
                 key="play"
-                initial={{ opacity: 0, rotate: 90 }}
-                animate={{ opacity: 1, rotate: 0 }}
-                exit={{ opacity: 0, rotate: -90 }}
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
               >
-                <Play size={18} fill="currentColor" className="ml-0.5" />
+                <Play size={24} fill="currentColor" className="ml-1" />
               </motion.div>
             )}
           </AnimatePresence>
           
-          {isPlaying && (
+          {/* Subtle pulse border when playing */}
+          {isAudioPlaying && (
             <motion.div 
-              className="absolute -inset-1 rounded-full border border-acid/30"
-              animate={{ scale: [1, 1.3], opacity: [0.3, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
+              className="absolute inset-0 rounded-full border border-acid/20"
+              animate={{ scale: [1, 1.2], opacity: [1, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
             />
           )}
         </motion.button>
 
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <span className="ui-label text-[10px] text-paper/80 tracking-[0.2em] uppercase">Now Playing</span>
-            <div className="flex gap-[2px] h-2 items-end">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-3">
+            <span className="ui-label text-[10px] text-paper/80 tracking-[0.2em] uppercase font-bold">Now Playing</span>
+            <div className="flex gap-[3px] h-3 items-end">
               {[...Array(4)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="w-[2px] bg-acid"
-                  animate={isPlaying ? { height: [2, 8, 3, 6, 2] } : { height: 2 }}
-                  transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1 }}
+                  className="w-[3px] bg-acid rounded-full"
+                  animate={isAudioPlaying ? { 
+                    height: [3, 12, 6, 10, 3],
+                    backgroundColor: ['#00FF94', '#00E0FF', '#00FF94']
+                  } : { height: 3 }}
+                  transition={{ 
+                    duration: 0.6, 
+                    repeat: Infinity, 
+                    delay: i * 0.1,
+                    backgroundColor: { duration: 2, repeat: Infinity }
+                  }}
                 />
               ))}
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="mono text-[12px] text-paper font-bold uppercase tracking-tight">One Dance</span>
-            <span className="mono text-[9px] text-paper/40">— DRAKE</span>
+            <span className="mono text-[16px] md:text-[20px] text-paper font-black uppercase tracking-tighter">One Dance</span>
+            <span className="mono text-[10px] md:text-[12px] text-paper/40 tracking-widest">— DRAKE</span>
           </div>
         </div>
 
-        <div className="hidden lg:flex flex-col gap-0.5 ml-6 pl-6 border-l border-paper/10 opacity-20">
-          <span className="mono text-[8px]">FREQ_LOCK: 44.1kHz</span>
-          <span className="mono text-[8px]">BITRATE: 320kbps</span>
+        <div className="hidden xl:flex flex-col gap-1 ml-8 pl-8 border-l border-paper/10">
+          <div className="flex flex-col">
+            <span className="mono text-[8px] text-paper/20 uppercase tracking-widest">Freq_Lock: 44.1kHz</span>
+            <span className="mono text-[8px] text-paper/20 uppercase tracking-widest">Bitrate: 320kbps</span>
+          </div>
+          <div className="h-[2px] w-12 bg-paper/5 relative overflow-hidden">
+             <motion.div 
+               className="absolute inset-0 bg-acid/40"
+               animate={isAudioPlaying ? { left: ['-100%', '100%'] } : { left: '-100%' }}
+               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+             />
+          </div>
         </div>
       </div>
     </div>

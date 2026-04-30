@@ -55,6 +55,7 @@ export const metadata: Metadata = {
 
 import CommandCenter from "@/components/CommandCenter";
 import SystemHUD from "@/components/SystemHUD";
+import AudioPlayer from "@/components/AudioPlayer";
 
 import { UIProvider } from "@/components/UIContext";
 
@@ -82,6 +83,7 @@ export default function RootLayout({
             }}
           />
 
+          <AudioPlayer />
           <CommandCenter />
           <SystemHUD />
           {children}
